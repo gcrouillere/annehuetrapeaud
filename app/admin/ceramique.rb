@@ -51,7 +51,7 @@ show do |ceramique|
     row :price_cents
     row :images do |ceramique|
       ceramique.photos.each do |photo|
-        span img(src: "http://res.cloudinary.com/dbhsa0hgf/image/upload/#{photo.path}")
+        span img(src: "http://res.cloudinary.com/ENV['CLOUDINARY_NAME']/image/upload/#{photo.path}")
       end
     end
   end
