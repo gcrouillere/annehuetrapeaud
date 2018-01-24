@@ -56,13 +56,13 @@
         color: black !important;
         margin-right: 20px;
         padding-bottom: 2px;
-       border-bottom: 1px solid black;
+       border-bottom: 1px solid transparent;
       i {
         color: black !important;
       }
     }
     a:hover {
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid black;
     }
   }
   /* mobile */
