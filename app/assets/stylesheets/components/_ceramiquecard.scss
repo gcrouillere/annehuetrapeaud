@@ -161,7 +161,7 @@
     width: 109px;
     height: 44px;
     background: $card-background;
-    border: 1px solid lighten($primary, 10%);
+    border: 1px solid $h2card;
     text-align: center;
     border-radius: 27px;
     margin: 0;
@@ -186,7 +186,7 @@
     width: 109px;
     height: 31px;
     background: $card-background;
-    border: 1px solid lighten($primary, 10%);
+    border: 1px solid $h2card;
     text-align: center;
     border-radius: 27px;
     margin: 0;
