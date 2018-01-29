@@ -1,5 +1,5 @@
 ActiveAdmin.register Ceramique, as: 'Produits' do
-  permit_params :name, :description, :stock, :weight, :category_id, :price_cents, photos: []
+  permit_params :name, :description, :stock, :weight, :category_id, :price_cents, :photo1, :photo2, :photo3, :photo4
   menu priority: 1
 
   index do
@@ -33,8 +33,10 @@ ActiveAdmin.register Ceramique, as: 'Produits' do
     f.input :weight, :hint => "Poids en grammes"
     f.input :category
     f.input :price_cents, :hint => "Prix en centimes d'euros. Ex: entrez 1200 pour un prix de 12 €"
-    f.input :photos, :as => :formtastic_attachinary, :hint => "Sélectionnez les photos du produit. Maintenez Ctrl appuyé pour en sélectionner plusieurs."
-    # , :hint => image_tag(f.object.photos[0].path)
+    f.input :photo1, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo1 du produit."
+    f.input :photo2, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo2 du produit."
+    f.input :photo3, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo3 du produit."
+    f.input :photo4, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo4 du produit."
   end
   f.actions
  end
@@ -50,9 +52,10 @@ show do |ceramique|
     end
     row :price_cents
     row :images do |ceramique|
-      ceramique.photos.each do |photo|
-        span img(src: "http://res.cloudinary.com/ENV['CLOUDINARY_NAME']/image/upload/#{photo.path}")
-      end
+      span img(src: "http://res.cloudinary.com/#{ENV['CLOUDINARY_NAME']}/image/upload/#{ceramique.photo1.path}") if ceramique.photo1
+      span img(src: "http://res.cloudinary.com/#{ENV['CLOUDINARY_NAME']}/image/upload/#{ceramique.photo2.path}") if ceramique.photo2
+      span img(src: "http://res.cloudinary.com/#{ENV['CLOUDINARY_NAME']}/image/upload/#{ceramique.photo3.path}") if ceramique.photo3
+      span img(src: "http://res.cloudinary.com/#{ENV['CLOUDINARY_NAME']}/image/upload/#{ceramique.photo4.path}") if ceramique.photo4
     end
   end
  end
@@ -79,26 +82,36 @@ show do |ceramique|
     end
  end
 
- controller do
+  controller do
 
-    def create
-    super do |format|
-      redirect_to admin_produits_path and return if resource.valid?
-    end
-  end
+      def create
+        super do |format|
+          if resource.valid?
+            flash[:notice] = "Produit créé"
+            redirect_to admin_produits_path and return
+          else
+            flash[:alert] = "Certains champs ont été oubliés ou ne sont pas correctement remplis. Voir ci-dessous."
+          end
+        end
+      end
 
-  def destroy
-    flash[:notice] = "#{ENV['MODEL'][0...-1].capitalize} supprimé"
-    super do |format|
-      redirect_to admin_produits_path and return
+    def destroy
+      flash[:notice] = "#{ENV['MODEL'][0...-1].capitalize} supprimé"
+      super do |format|
+        redirect_to admin_produits_path and return
+      end
     end
-  end
 
-  def update
-    super do |format|
-      redirect_to admin_produits_path and return if resource.valid?
+    def update
+      super do |format|
+          if resource.valid?
+            flash[:notice] = "Produit mis à jour"
+            redirect_to admin_produits_path and return
+          else
+            flash[:alert] = "Certains champs ont été oubliés ou ne sont pas correctement remplis. Voir ci-dessous."
+          end
+      end
     end
-  end
 
   end
 

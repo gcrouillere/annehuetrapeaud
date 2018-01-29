@@ -13,8 +13,8 @@
 
   .banner-content {
     position: absolute;
-    top: 150px;
-    left: calc(50% - 271px);
+    top: 318px;
+    left: calc(50% - 297px);
     text-align: center;
     color: $home-font-color;
     padding: 0 10px;
@@ -29,6 +29,7 @@
     }
     p {
       font-weight: 400;
+      font-size: 40px;
     }
   }
 }

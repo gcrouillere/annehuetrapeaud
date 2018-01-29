@@ -1,8 +1,8 @@
 <% content_for(:description) do %>
-Vendez vos produits en ligne ! Site de e-commerce configurable. Créez votre compte et visualisez votre futur site de vente en ligne de vos produits.
+  Vente de céramiques et poteries artisanales. Pièces en porcelaine et grès. Ma production se compose de poteries utilitaires et de pièces uniques décoratives.
 <% end %>
 <% content_for(:title_tag) do %>
-  Vente de <%=ENV['MODEL']%> - <%=ENV['FIRSTNAME']%> <%=ENV['LASTNAME'] %>
+  Acheter en ligne les céramiques d'Anne Huet Rapeaud.
 <% end %>
 
 <%= render 'shared/home_pics' %>
@@ -21,9 +21,9 @@ Vendez vos produits en ligne ! Site de e-commerce configurable. Créez votre com
   <div class="hidden-xs">
     <div class="banner">
       <div class="banner-content">
-        <h1><%= ENV['MODEL'].capitalize%></h1>
-        <p><%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}" %></p>
-        <%= link_to "Voir les #{ENV['MODEL']}", ceramiques_path, class: "btn btn-primary btn-lg btn-home" %>
+        <h1>Anne Huet Rapeaud</h1>
+        <p>Céramiques Porcelaine et Grès</p>
+        <%= link_to "Voir les céramiques", ceramiques_path, class: "btn btn-primary btn-lg btn-home" %>
       </div>
         <%= photo_update('productphoto', 30, '', '', 30, '.homepic', "Mise à jour photo d'accueil")%>
         <%= photo_update('productphotomobile', 30, '', '', 412, '.homepicmobile', "Mise à jour photo d'accueil pour mobiles")%>

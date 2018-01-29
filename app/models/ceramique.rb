@@ -10,12 +10,15 @@ class Ceramique < ApplicationRecord
 
   belongs_to :category
   belongs_to :offer
-  has_attachments :photos, maximum: 2, dependent: :destroy
+  has_attachment :photo1, dependent: :destroy
+  has_attachment :photo2, dependent: :destroy
+  has_attachment :photo3, dependent: :destroy
+  has_attachment :photo4, dependent: :destroy
   has_many :basketlines, dependent: :destroy
 
   monetize :price_cents
 
-  validates :photos, presence: true
+  validates :photo1, presence: true
   validates :category, presence: true
   validates :name, presence: true
   validates :weight, presence: true, numericality: { greater_than: 0, less_than: 30001 , only_integer: true, message: 'Le poids doit être compris entre 1 et 30 000 grammes. Pas d\'expédition Colissimo possible en dehors de cette plage.' }

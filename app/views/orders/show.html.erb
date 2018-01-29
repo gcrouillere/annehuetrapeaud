@@ -15,7 +15,7 @@
     <div class="hidden-xs col-sm-12">
       <% @order.basketlines.each do |basketline| %>
         <div class="basket-item">
-          <%= cl_image_tag basketline.ceramique.photos[0].path, class: "basket-article-img" %>
+          <%= cl_image_tag basketline.ceramique.photo1.path, class: "basket-article-img" %>
           <h4><%= basketline.ceramique.name.capitalize %></h4>
           <h5>Quantité: <%= basketline.quantity %></h5>
           <% basketline.ceramique.offer ? discount =  basketline.ceramique.offer.discount : discount = 0 %>
@@ -50,7 +50,7 @@
 
       <% @order.basketlines.each do |basketline| %>
         <div class="basket-item mobile">
-          <%= cl_image_tag basketline.ceramique.photos[0].path, class: "basket-article-img" %>
+          <%= cl_image_tag basketline.ceramique.photo1.path, class: "basket-article-img" %>
           <div class="order-detail">
             <h4><%= basketline.ceramique.name.capitalize %></h4>
             <div class="detail-text">
