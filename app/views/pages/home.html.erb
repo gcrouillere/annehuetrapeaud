@@ -35,9 +35,9 @@
   <div class="hidden-sm hidden-md hidden-lg">
     <div class="banner-xs">
       <div class="banner-content-xs">
-        <h1><%= ENV['MODEL'].capitalize%></h1>
-        <p><%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}" %></p>
-        <%= link_to "Voir les #{ENV['MODEL']}", ceramiques_path, class: "btn btn-primary btn-home" %>
+        <h1>Anne Huet Rapeaud</h1>
+        <p>Céramiques Porcelaine et Grès</p>
+        <%= link_to "Voir les céramiques", ceramiques_path, class: "btn btn-primary btn-home" %>
       </div>
     </div>
   </div>
@@ -84,7 +84,7 @@
   {
     "@context": "http://schema.org",
     "@type": "ArtGallery",
-    "name": "Les <%="#{ENV['MODEL']} de #{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%>",
+    "name": "Les <%="#{ENV['MODEL']} de #{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME']}"%>",
     "description": "Online craft store",
     "openingHours": "Mo-Fr 09:00-18:00",
     "telephone": "<%= ENV['TELEPHONE']%>",
