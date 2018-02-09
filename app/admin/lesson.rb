@@ -35,6 +35,7 @@ ActiveAdmin.register Lesson do
       row :duration
       row :user
       row :confirmed
+      row :moment
       if Calendarupdate.where(lesson: lesson).blank?
         row :student
         row "Paiement" do |lesson|
@@ -163,7 +164,7 @@ ActiveAdmin.register Lesson do
           day_checked = lesson.start + i.day
           booking = Booking.where(day: day_checked).first
           am_pm_booking_management(lesson, booking)
-          if booking.capacity >= 2 * (ENV['CAPACITY'].to_i - 1)
+          if booking.capacity >= 2 * (ENV['CAPACITY'].to_i)
             booking.destroy
           end
         end
@@ -187,8 +188,7 @@ ActiveAdmin.register Lesson do
         elsif lesson.moment == "après-midi"
           booking.update(capacity: booking.capacity - lesson.student, capacity_pm: booking.capacity_pm - lesson.student)
         else
-          booking.update(capacity: booking.capacity - lesson.student, capacity_am: booking.capacity_am - lesson.student)
-          booking.update(capacity: booking.capacity - lesson.student, capacity_pm: booking.capacity_pm - lesson.student)
+          booking.update(capacity: booking.capacity - 2 * lesson.student, capacity_am: booking.capacity_am - lesson.student, capacity_pm: booking.capacity_pm - lesson.student)
         end
       end
       if params[:action] == "destroy"
@@ -197,8 +197,7 @@ ActiveAdmin.register Lesson do
         elsif lesson.moment == "après-midi"
           booking.update(capacity: booking.capacity + lesson.student, capacity_pm: booking.capacity_pm + lesson.student)
         else
-          booking.update(capacity: booking.capacity + lesson.student, capacity_am: booking.capacity_am + lesson.student)
-          booking.update(capacity: booking.capacity + lesson.student, capacity_pm: booking.capacity_pm + lesson.student)
+          booking.update(capacity: booking.capacity + 2 * lesson.student, capacity_am: booking.capacity_am + lesson.student, capacity_pm: booking.capacity_pm + lesson.student)
         end
         booking.update(full: false)
       end

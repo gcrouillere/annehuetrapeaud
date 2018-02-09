@@ -95,7 +95,6 @@
   <script>
     $(document).on('ready', function() {
       var jsArray = <%= @first_possible_day.to_json.html_safe %>
-      console.log(jsArray[0])
       var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>
 
       $('#datetimepicker1').datetimepicker({
@@ -103,7 +102,7 @@
         format: 'DD.MM.YYYY',
         minDate: jsArray[0],
         locale: moment.locale('fr')
-        }).on('dp.show dp.change dp.update', function () {
+        }).on('dp.show dp.change dp.update dp.hide', function () {
           $('.tooltip-inner').remove();
           $('.tooltip-arrow').remove();
 

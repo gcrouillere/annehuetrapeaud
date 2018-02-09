@@ -130,13 +130,13 @@ class LessonsController < ApplicationController
     day_checked = Time.now.beginning_of_day + 1.day
     output = []
     for i in 0..365
-      day_checked = day_checked + 1.day
       if Booking.where("day >= ? AND day <= ? AND capacity > ? ", day_checked.beginning_of_day, day_checked.end_of_day, 0).present? || Booking.where("day >= ? AND day <= ? ", day_checked.beginning_of_day, day_checked.end_of_day).empty?
         day = format_booking_to_moment(day_checked.day)
         month = format_booking_to_moment(day_checked.month)
         output << "#{day_checked.year}-#{month}-#{day}"
         return output
       end
+      day_checked = day_checked + 1.day
     end
     return output
   end

@@ -20,8 +20,9 @@
         <%= link_to ceramiques_path do %>
           <span><%= image_tag "liste.png", class: "iconhuet"%> Liste des <%=ENV['MODEL']%></span>
         <% end %>
-          <!-- link_to new_lesson_path do  -->
-        <!--   <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span> -->
+        <%= link_to new_lesson_path do %>
+          <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
+        <% end %>
 
         <%= link_to info_path do %>
           <span><%= image_tag "bio.png", class: "iconhuet"%> Bio</span>
@@ -47,8 +48,9 @@
         <%= link_to ceramiques_path do %>
           <span><%= image_tag "liste.png", class: "iconhuet"%> Liste des <%=ENV['MODEL']%></span>
         <% end %>
-        <!-- link_to new_lesson_path do  -->
-        <!--   <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span> -->
+        <%= link_to new_lesson_path do %>
+          <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
+        <% end %>
 
         <%= link_to info_path do %>
             <span><%= image_tag "bio.png", class: "iconhuet"%> Bio</span>
@@ -71,8 +73,9 @@
 
   <div class="navbar-item">
     <div class="list-mobile">
-       <!-- link_to new_lesson_path do -->
-        <!-- <span><%= image_tag "stage.png", class: "iconhuet"%> Stage</span> -->
+      <%= link_to new_lesson_path do %>
+        <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
+      <% end %>
       <%= link_to ceramiques_path do %>
           <span><%= image_tag "liste.png", class: "iconhuet"%> Céramiques</span>
         <% end %>
