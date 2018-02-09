@@ -1,11 +1,11 @@
-<%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}" %>,
+<%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME']}" %>,
 
 Tu as reçu le paiement des arrhes pour le stage suivant :
 
   - Client: <%= "#{@lesson.user.first_name.capitalize} #{@lesson.user.last_name.capitalize} - #{@lesson.user.email}"%>
-  - Démarrage le <%= "#{@lesson.start.day}/#{@lesson.start.month}/#{@lesson.start.year}" %>.
-  - Durée : <%= "#{@lesson.duration}" %> jours.
-  - <%= "#{@lesson.student}" %> personnes.
+  - Date: <%= "#{@lesson.start.day}/#{@lesson.start.month}/#{@lesson.start.year}" %>.
+  - Durée: <%= "#{@lesson.moment}" %>.
+  - <%= "#{@lesson.student}" %> personne(s).
 
 Cordialement
 
