@@ -127,7 +127,7 @@ ActiveAdmin.register Lesson do
       elsif lesson.moment == "matin"
        amount = ENV['FIVEDAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
       else
-        amount = ENV['3RDLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
+        amount = ENV['FULLLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
      end
       Order.create!(
         state: 'pending',
