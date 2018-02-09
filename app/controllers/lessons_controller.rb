@@ -12,6 +12,7 @@ class LessonsController < ApplicationController
     @dev_redirection = "https://creermonecommerce.fr/lessons/new"
     @lesson = Lesson.new
     @disabled_dates = full_bookings
+    @first_possible_day = get_first_possible_day
     @confirmed_course_js_format = confirmed_courses
     @twitter_url = request.original_url.to_query('url')
   end
@@ -51,10 +52,10 @@ class LessonsController < ApplicationController
           flash[:alert] = "Impossible de réserver. Jour(s) possible(s) pour début du stage : #{closest_start_answer}"
           redirect_to new_lesson_path and return
         end
-        if @lesson.student > booking.capacity
-          answer_min_capacity = min_capacity(@lesson)
+        #Next "if" block changed for Huet Rapeaud
+        if capacity_check(booking, @lesson)
           @lesson.destroy
-          flash[:alert] = "Impossible de réserver. Plus que #{answer_min_capacity} places disponible sur la période demandée"
+          flash[:alert] = "Impossible de réserver. Il reste #{booking.capacity_am} place(s) disponible(s) pour le matin et #{booking.capacity_pm} place(s) disponible(s) pour l'après-midi"
           redirect_to new_lesson_path and return
         end
       end
@@ -72,7 +73,7 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:start, :duration, :student, :user_id)
+    params.require(:lesson).permit(:start, :duration, :student, :user_id, :moment)
   end
 
   def confirmed_courses
@@ -93,13 +94,9 @@ class LessonsController < ApplicationController
     return confirmed_courses_js_format
   end
 
+  # Next method removed for Huet Rapeaud
   def min_capacity(lesson)
-    min_capacities = []
-    for i in 0...lesson.duration
-      day_checked = lesson.start + i.day
-      min_capacities << Booking.where(day: day_checked).first.capacity
-    end
-    return min_capacities.min
+
   end
 
   def format_booking_to_moment(booking_day_or_month)
@@ -129,4 +126,31 @@ class LessonsController < ApplicationController
     return disabled_dates
   end
 
+  def get_first_possible_day
+    day_checked = Time.now.beginning_of_day + 1.day
+    output = []
+    for i in 0..365
+      day_checked = day_checked + 1.day
+      if Booking.where("day >= ? AND day <= ? AND capacity > ? ", day_checked.beginning_of_day, day_checked.end_of_day, 0).present? || Booking.where("day >= ? AND day <= ? ", day_checked.beginning_of_day, day_checked.end_of_day).empty?
+        day = format_booking_to_moment(day_checked.day)
+        month = format_booking_to_moment(day_checked.month)
+        output << "#{day_checked.year}-#{month}-#{day}"
+        return output
+      end
+    end
+    return output
+  end
+
+  # Huet rapeaud Specific
+  def capacity_check(booking, lesson)
+    output = false
+    if lesson.moment == "matin"
+      lesson.student > booking.capacity_am ? output = true : output
+    elsif lesson.moment == "après-midi"
+      lesson.student > booking.capacity_pm ? output = true : output
+    else
+      lesson.student > booking.capacity_am || lesson.student > booking.capacity_pm ? output = true : output
+    end
+    return output
+  end
 end

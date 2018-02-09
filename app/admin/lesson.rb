@@ -17,7 +17,7 @@ ActiveAdmin.register Lesson do
 
     #Paramètres pour index_as_calendar
     {
-      title: is_a_calendarupdate ? "Période bloquée" : "#{lesson.duration} jours - #{lesson.student} personnes - Confirmée: #{confirmation} - Payée: #{payment}",
+      title: is_a_calendarupdate ? "Période bloquée" : "#{lesson.moment} - #{lesson.student} personnes - Confirmée: #{confirmation} - Payée: #{payment}",
       start: lesson.start,
       end: (lesson.start + lesson.duration.day),
       url: "#{admin_lesson_path(lesson)}",
@@ -64,8 +64,8 @@ ActiveAdmin.register Lesson do
       lesson = Lesson.find(params[:id].to_i)
       lesson_ok = false
       # Mise à jour ou création des bookings sur chaque jour
-      if params[:lesson][:confirmed] == "1" # Si la réservation va être confirmée
-        if perdiod_available_for_lesson(lesson) # Si la période est dispo
+      if params[:lesson][:confirmed] == "1" && lesson.confirmed == false # Si la réservation va être confirmée
+        if period_available_for_lesson(lesson) # Si la période est dispo
           bookings_creation(lesson)
           create_order_for_lesson(lesson)
           LessonMailer.mail_user_after_confirmation(lesson).deliver_now
@@ -98,23 +98,36 @@ ActiveAdmin.register Lesson do
 
     #Helper methods
 
-    def perdiod_available_for_lesson(lesson)
+    def period_available_for_lesson(lesson)
       period_ok = true
       for i in 0...lesson.duration
         day_checked = lesson.start + i.day
         booking = Booking.where(day: day_checked).first
         if booking.present?
           if booking.course != i + 1 || lesson.student > booking.capacity
-            period_ok = false
+            if lesson.moment == "matin"
+              lesson.student > booking.capacity_am ? period_ok = false : nil
+            elsif lesson.moment == "après-midi"
+              lesson.student > booking.capacity_am ? period_ok = false : nil
+            else
+              lesson.student > booking.capacity_am || lesson.student > booking.capacity_pm ? period_ok = false : nil
+            end
           end
         end
       end
       return period_ok
     end
 
+    #Next method modified for Huet Rapeaud
     def create_order_for_lesson(lesson)
       amount = 0.0
-      lesson.duration == ENV['MINDURATION'].to_i ? amount = ENV['TWODAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f : amount = ENV['FIVEDAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
+      if lesson.moment == "matin"
+       amount = ENV['TWODAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
+      elsif lesson.moment == "matin"
+       amount = ENV['FIVEDAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
+      else
+        amount = ENV['3RDLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
+     end
       Order.create!(
         state: 'pending',
         amount_cents: amount * 100,
@@ -129,16 +142,16 @@ ActiveAdmin.register Lesson do
         day_checked = lesson.start + i.day
         if Booking.where(day: day_checked).present? # Si un cours existe déjà ce jour
           booking = Booking.where(day: day_checked).first
-          booking.update(capacity: booking.capacity - lesson.student)
+          # next 2 lines modified for Huet Rapeaud
+          am_pm_booking_management(lesson, booking)
+          booking_capacity_check_with_am_pm(lesson, booking)
           if lesson.duration == ENV['MAXDURATION'].to_i
             booking.update(duration: ENV['MAXDURATION'].to_i)
           end
-          if booking.capacity < ENV['MINBOOKING'].to_i
-            booking.update(full: true, capacity: 0)
-          end
         else
-          booking = Booking.create(day: day_checked, capacity: ENV['CAPACITY'].to_i - lesson.student, course: i + 1, duration: lesson.duration)
-          booking.update(full: true) if Booking.last.capacity < ENV['MINBOOKING'].to_i
+          # next line modified for Huet Rapeaud
+          booking_creation(day_checked, lesson, i)
+          booking = Booking.last
         end
         previous_booking_full = booking.full
       end
@@ -149,8 +162,8 @@ ActiveAdmin.register Lesson do
         for i in 0...lesson.duration
           day_checked = lesson.start + i.day
           booking = Booking.where(day: day_checked).first
-          booking.update(capacity: booking.capacity + lesson.student, full: false)
-          if booking.capacity >= ENV['CAPACITY'].to_i - 1
+          am_pm_booking_management(lesson, booking)
+          if booking.capacity >= 2 * (ENV['CAPACITY'].to_i - 1)
             booking.destroy
           end
         end
@@ -165,6 +178,57 @@ ActiveAdmin.register Lesson do
         end
       end
     end
+
+    # Huet Rapeaud Specific
+    def am_pm_booking_management(lesson, booking)
+      if params[:action] == "update"
+        if lesson.moment == "matin"
+          booking.update(capacity: booking.capacity - lesson.student, capacity_am: booking.capacity_am - lesson.student)
+        elsif lesson.moment == "après-midi"
+          booking.update(capacity: booking.capacity - lesson.student, capacity_pm: booking.capacity_pm - lesson.student)
+        else
+          booking.update(capacity: booking.capacity - lesson.student, capacity_am: booking.capacity_am - lesson.student)
+          booking.update(capacity: booking.capacity - lesson.student, capacity_pm: booking.capacity_pm - lesson.student)
+        end
+      end
+      if params[:action] == "destroy"
+        if lesson.moment == "matin"
+          booking.update(capacity: booking.capacity + lesson.student, capacity_am: booking.capacity_am + lesson.student)
+        elsif lesson.moment == "après-midi"
+          booking.update(capacity: booking.capacity + lesson.student, capacity_pm: booking.capacity_pm + lesson.student)
+        else
+          booking.update(capacity: booking.capacity + lesson.student, capacity_am: booking.capacity_am + lesson.student)
+          booking.update(capacity: booking.capacity + lesson.student, capacity_pm: booking.capacity_pm + lesson.student)
+        end
+        booking.update(full: false)
+      end
+    end
+
+    def booking_capacity_check_with_am_pm(lesson, booking)
+      if booking.capacity_am < ENV['MINBOOKING'].to_i
+        booking.update(capacity_am: 0)
+      end
+      if booking.capacity_pm < ENV['MINBOOKING'].to_i
+        booking.update(capacity_pm: 0)
+      end
+      if booking.capacity_am == 0 && booking.capacity_pm == 0
+        booking.update(full: true, capacity: 0)
+      end
+    end
+
+    def booking_creation(day_checked, lesson, i)
+      if lesson.moment == "matin"
+        booking = Booking.create(day: day_checked, capacity: 2 * ENV['CAPACITY'].to_i - lesson.student, capacity_am: ENV['CAPACITY'].to_i - lesson.student, capacity_pm: ENV['CAPACITY'].to_i, course: i + 1, duration: lesson.duration)
+        booking.update(full: true) if Booking.last.capacity < ENV['MINBOOKING'].to_i
+      elsif lesson.moment == "après-midi"
+        booking = Booking.create(day: day_checked, capacity: 2 * ENV['CAPACITY'].to_i - lesson.student, capacity_am: ENV['CAPACITY'].to_i, capacity_pm: ENV['CAPACITY'].to_i - lesson.student, course: i + 1, duration: lesson.duration)
+        booking.update(full: true) if Booking.last.capacity < ENV['MINBOOKING'].to_i
+      else
+        booking = Booking.create(day: day_checked, capacity: 2 * ENV['CAPACITY'].to_i - lesson.student, capacity_am: ENV['CAPACITY'].to_i - lesson.student, capacity_pm: ENV['CAPACITY'].to_i - lesson.student, course: i + 1, duration: lesson.duration)
+        booking.update(full: true) if Booking.last.capacity < ENV['MINBOOKING'].to_i
+      end
+    end
+    #Huet Rapeaud specific end
 
   end
 end

@@ -8,8 +8,8 @@
     <div class="hidden-xs col-sm-offset-2 col-sm-8">
       <div class="text-center-stage stage-payment">
         <h3>Montant des arrhes: <%= humanized_money(@order.amount) %> <%= currency_symbol %></h3>
-        <p>Stage de poterie pour <%= @order.lesson.duration%> jours, <%= @order.lesson.student%> personnes.</p>
-        <p>Début du stage le <%= @order.lesson.start.day%>/<%= @order.lesson.start.month%>/<%= @order.lesson.start.year%>.</p>
+        <p>Stage de poterie pour <%= @order.lesson.student%> personne(s).</p>
+        <p>Date du stage: <%= @order.lesson.start.day%>/<%= @order.lesson.start.month%>/<%= @order.lesson.start.year%> (<%= @order.lesson.moment %>).</p>
         <form action="/orders/<%= @order.id%>/payments/new" method="get">
           <input type="hidden" name="order_id" value="<%= @order.id%>">
           <button type="submit" class="btn btn-primary order-stage">
@@ -22,8 +22,8 @@
     <div class="hidden-sm hidden-md hidden-lg col-xs-12">
       <div class="text-center-stage-mobile stage-payment-mobile">
         <h4>Montant des arrhes: <%= humanized_money(@order.amount) %> <%= currency_symbol %></h4>
-        <p>Stage de poterie pour <%= @order.lesson.duration%> jours, <%= @order.lesson.student%> personnes.</p>
-        <p>Début du stage le <%= @order.lesson.start.day%>/<%= @order.lesson.start.month%>/<%= @order.lesson.start.year%>.</p>
+        <p>Stage de poterie pour <%= @order.lesson.student%> personne(s).</p>
+        <p>Date du stage: <%= @order.lesson.start.day%>/<%= @order.lesson.start.month%>/<%= @order.lesson.start.year%> (<%= @order.lesson.moment %>).</p>
         <form action="/orders/<%= @order.id%>/payments/new" method="get">
           <input type="hidden" name="order_id" value="<%= @order.id%>">
           <button type="submit" class="btn btn-primary order-stage">

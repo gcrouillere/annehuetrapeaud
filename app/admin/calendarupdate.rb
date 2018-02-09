@@ -42,7 +42,7 @@ ActiveAdmin.register Calendarupdate do
         period_ok = period_check(p_start, p_end)
         if period_ok
           while day_checked <= p_end
-            Booking.create(day: day_checked, capacity: 0, course: 0, duration: 0, full: true)
+            Booking.create(day: day_checked, capacity: 0, capacity_am: 0, capacity_pm: 0, course: 0, duration: 0, full: true)
             day_checked += 1.day
           end
         else

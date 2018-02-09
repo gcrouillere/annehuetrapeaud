@@ -23,7 +23,7 @@
         <%= facebook_share_id("facebookshare") %>
         <%= simple_form_for @lesson do |f| %>
           <%= f.input :student, collection: ENV['MINBOOKING'].to_i..ENV['CAPACITY'].to_i, label: "Nombre de participants", selected: ENV['MINBOOKING'].to_i %>
-          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> 1er jour de stage</label>
+          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> Jour de stage</label>
           <div class="form-group">
             <div class='input-group date' id='datetimepicker1'>
               <span class="input-group-addon">
@@ -32,7 +32,8 @@
               <input type='text' class="form-control" name="lesson[start]" placeholder="Cliquez sur l'icône calendrier pour sélectionner une date"/>
             </div>
           </div>
-          <%= f.input :duration, collection: [ENV['MINDURATION'],ENV['MAXDURATION']], label: "Durée en jours", selected: ENV['MINDURATION'] %>
+          <%= f.hidden_field :duration, value: 1 %>
+          <%= f.input :moment, collection: ["matin", "après-midi", "journée"], label: "Durée", selected: "journée" %>
           <% if user_signed_in? %>
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
@@ -93,13 +94,14 @@
 <% content_for(:after_js) do %>
   <script>
     $(document).on('ready', function() {
-
+      var jsArray = <%= @first_possible_day.to_json.html_safe %>
+      console.log(jsArray[0])
       var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>
 
       $('#datetimepicker1').datetimepicker({
         disabledDates: <%= raw @disabled_dates%>,
         format: 'DD.MM.YYYY',
-        minDate: Date.now(),
+        minDate: jsArray[0],
         locale: moment.locale('fr')
         }).on('dp.show dp.change dp.update', function () {
           $('.tooltip-inner').remove();
