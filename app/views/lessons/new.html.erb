@@ -64,7 +64,7 @@
           <%= f.input :student, collection: ENV['MINBOOKING'].to_i..ENV['CAPACITY'].to_i, label: "Nombre de participants", selected: ENV['MINBOOKING'].to_i %>
           <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> 1er jour de stage</label>
           <div class="form-group">
-            <div class='input-group date' id='datetimepicker1'>
+            <div class='input-group date' id='datetimepicker2'>
               <span class="input-group-addon">
                 <span class="fa fa-calendar-o"></span>
               </span>
@@ -97,7 +97,7 @@
       var jsArray = <%= @first_possible_day.to_json.html_safe %>
       var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>
 
-      $('#datetimepicker1').datetimepicker({
+      $('#datetimepicker1, #datetimepicker2').datetimepicker({
         disabledDates: <%= raw @disabled_dates%>,
         format: 'DD.MM.YYYY',
         minDate: jsArray[0],

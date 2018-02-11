@@ -73,14 +73,14 @@
 
   <div class="navbar-item">
     <div class="list-mobile">
-      <%= link_to new_lesson_path do %>
-        <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
-      <% end %>
       <%= link_to ceramiques_path do %>
-          <span><%= image_tag "liste.png", class: "iconhuet"%> Céramiques</span>
+          <span> Céramiques</span>
         <% end %>
+      <%= link_to new_lesson_path do %>
+        <span> Stage</span>
+      <% end %>
       <%= link_to info_path do %>
-        <li><span><%= image_tag "bio.png", class: "iconhuet"%> Bio</span></li>
+        <li><span> Bio</span></li>
       <% end %>
 
       <% if user_signed_in? %>
@@ -88,7 +88,7 @@
           <% if Order.where(id: session[:order]).present? %>
             <% if Order.where(id: session[:order]).first.state != "lost" %>
               <%= link_to order_path(Order.find(session[:order])) do %>
-                <span><%= image_tag "basket.png", class: "iconhuet"%> Panier</span>
+                <span><i class="fa fa-shopping-cart"></i></span>
               <% end %>
             <% end %>
           <% end %>
