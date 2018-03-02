@@ -45,7 +45,7 @@
       position: absolute;
       top: 100px;
       text-align: center;
-      left: calc(50% - 156px);
+      left: calc(50% - 120px);
       color: $home-font-color;
       padding: 0 10px;
       h1, h2, h3, p {
@@ -95,35 +95,26 @@
     }
   }
   .text-left {
-    position: relative;
     padding: 20px;
+    span {
+      top: 25px;
+      font-family: Raleway;
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: white;
+      text-shadow: 1px 1px 0px $primary;
+    }
     .live-text {
-      margin-top: 30px;
-    }
-    h1:first-child, h2:first-child {
-      margin-left: 50px
-    }
-    p:nth-child(2) {
-      margin-top: 20px !important;
+      margin-top: 20px;
     }
     p {
       margin-left: 13px;
       margin-top: 0px;
       margin-bottom: 11px;
     }
-    img {
-      position: absolute;
-      width: 10%;
-      top: 25px;
-    }
     #live-text1 {
       min-height: 20px;
-       h1:first-child, h2:first-child {
-        margin-left: 50px
-      }
-      p:nth-child(2) {
-        margin-top: 20px !important;
-      }
       p {
         margin-left: 13px;
         margin-top: 0px;

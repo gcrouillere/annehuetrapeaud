@@ -5,7 +5,7 @@
   justify-content: space-between;
   align-items: center;
 
-  .contact {
+  .contact-default {
     background-color: $footer;
     display: flex;
     align-items: center;
@@ -23,7 +23,7 @@
       }
     }
     h6 {
-      color: $navbar;
+      color: $primary;
       .middle-text {
         margin-right: 10px !important;
       }
@@ -46,12 +46,12 @@
   }
 }
 
-.footer-mobile {
+#footer-mobile {
   background-color: $footer;
   display: flex;
   align-items: flex-start;
 
-  .contact {
+  .contact-default {
     background-color: $footer;
     color: $navbar;
     font-size: $font-size-footer-icone;

@@ -9,7 +9,7 @@ class LessonsController < ApplicationController
   end
 
   def new
-    @dev_redirection = "https://creermonecommerce.fr/lessons/new"
+    @dev_redirection = "https://www.creermonecommerce.fr/lessons/new"
     @lesson = Lesson.new
     @disabled_dates = full_bookings
     @first_possible_day = get_first_possible_day
