@@ -2,6 +2,7 @@
  * Fonts type
  * ------------------------------------- */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
+// @import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,600,700|Nanum+Myeongjo:400,700,800");
 $base-font: "Open Sans", "Helvetica", "sans-serif";
 $header-font: "Raleway", "Helvetica", "sans-serif";
 
@@ -9,9 +10,8 @@ $header-font: "Raleway", "Helvetica", "sans-serif";
  * Colors
  * ------------------------------------- */
  //Main :
-// $primary: #ffc421;
-// $navbar: linear-gradient(to right, #fefefe, #8bc5ef);
 $primary: #0FA5AC;
+$primary-opacified: rgba(15,165,172,0.3);
 $navbar: linear-gradient(to right, #fefefe, #878787);
 $filter-background: #0FA5AC;
 $h2card: #097377;
@@ -73,7 +73,7 @@ $font-weight-label: 100;
  * Cards
  * ------------------------------------- */
 $card-background: white;
-$project-border-radius: 3px;
+$project-border-radius: 1px;
 $card-border: 1px solid rgba(0, 0, 0, 0.1);
 $padding-large: 20px;
 $padding-small: 10px;

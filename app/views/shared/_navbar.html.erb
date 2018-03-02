@@ -18,20 +18,19 @@
           <% end %>
         <% end %>
         <%= link_to ceramiques_path do %>
-          <span><%= image_tag "liste.png", class: "iconhuet"%> Liste des <%=ENV['MODEL']%></span>
+          <span><%= image_tag "liste.png", class: "iconhuet"%> Boutique en ligne</span>
         <% end %>
         <%= link_to new_lesson_path do %>
           <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
         <% end %>
-
         <%= link_to info_path do %>
-          <span><%= image_tag "bio.png", class: "iconhuet"%> Bio</span>
+          <span><%= image_tag "bio.png", class: "iconhuet"%> Infos</span>
         <% end %>
         <% if session[:order].present? %>
           <% if Order.where(id: session[:order]).present? %>
             <% if Order.where(id: session[:order]).first.state != "lost" %>
               <%= link_to order_path(Order.find(session[:order])) do %>
-                <span><%= image_tag "basket.png", class: "iconhuet"%> Panier</span>
+                <span><%= image_tag "basket.png", class: "iconhuet"%></span>
               <% end %>
             <% end %>
           <% end %>
@@ -46,14 +45,22 @@
     <div class="navbar-item">
       <div class="nav-bar-list">
         <%= link_to ceramiques_path do %>
-          <span><%= image_tag "liste.png", class: "iconhuet"%> Liste des <%=ENV['MODEL']%></span>
+          <span><%= image_tag "liste.png", class: "iconhuet"%> Boutique en ligne</span>
         <% end %>
         <%= link_to new_lesson_path do %>
           <span><%= image_tag "stage.png", class: "iconhuet"%> Réserver un stage</span>
         <% end %>
-
         <%= link_to info_path do %>
-            <span><%= image_tag "bio.png", class: "iconhuet"%> Bio</span>
+          <span><%= image_tag "bio.png", class: "iconhuet"%> Infos</span>
+        <% end %>
+        <% if session[:order].present? %>
+          <% if Order.where(id: session[:order]).present? %>
+            <% if Order.where(id: session[:order]).first.state != "lost" %>
+              <%= link_to order_path(Order.find(session[:order])) do %>
+                <span><i class="fa fa-shopping-cart"></i></span>
+              <% end %>
+            <% end %>
+          <% end %>
         <% end %>
         <%= link_to new_user_session_path, class: "navbar-item navbar-link" do %>
           <span><%= image_tag "deconnect.png", class: "iconhuet"%> Se connecter</span>
@@ -74,22 +81,20 @@
   <div class="navbar-item">
     <div class="list-mobile">
       <%= link_to ceramiques_path do %>
-          <span> Céramiques</span>
-        <% end %>
+        <span><i class="fa fa-bars"></i> Shop</span>
+      <% end %>
       <%= link_to new_lesson_path do %>
         <span> Stage</span>
       <% end %>
       <%= link_to info_path do %>
-        <li><span> Bio</span></li>
+        <li><span><i class="fa fa-female"></i> Infos</span></li>
       <% end %>
 
-      <% if user_signed_in? %>
-        <% if session[:order].present? %>
-          <% if Order.where(id: session[:order]).present? %>
-            <% if Order.where(id: session[:order]).first.state != "lost" %>
-              <%= link_to order_path(Order.find(session[:order])) do %>
-                <span><i class="fa fa-shopping-cart"></i></span>
-              <% end %>
+      <% if session[:order].present? %>
+        <% if Order.where(id: session[:order]).present? %>
+          <% if Order.where(id: session[:order]).first.state != "lost" %>
+            <%= link_to order_path(Order.find(session[:order])) do %>
+              <span><i class="fa fa-shopping-cart"></i></span>
             <% end %>
           <% end %>
         <% end %>

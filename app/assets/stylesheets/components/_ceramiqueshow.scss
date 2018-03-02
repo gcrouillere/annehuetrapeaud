@@ -1,33 +1,44 @@
-.container {
-  margin-top: 20px;
-
-  .col-xs-12 {
-    padding: 0px;
-  }
-
 // LAPTOP
   .product-show {
     margin-bottom: 30px;
     display: flex;
-    .product-show-half-top-wrapper {
+    .product-show-half-top-wrapper-left {
       padding: 0px;
+      max-width: 50%;
+      flex: 1 0 auto;
+    }
+    .product-show-half-top-wrapper-right {
+      min-width: 50%;
+      max-width: 100%;
+      width: auto;
     }
     .ceramique-images {
-      .img-front {
+      padding-left: 12px;
+      .img-front.horizontale {
         border-radius: $project-border-radius;
         width: 100%;
+      }
+      .img-front.verticale {
+        border-radius: $project-border-radius;
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        max-height: 75vh;
+        width: auto;
+        height: auto;
       }
       .images {
         display: flex;
         justify-content: center;
         align-items: center;
         .thumbnail {
+          cursor: pointer;
           border-radius: $project-border-radius;
-          width: 15%;
-          height: 15%;
+          height: 80px;
           margin-right: 10px;
           transition: all ease 0.2s;
           margin: 10px !important;
+          padding: 0px;
         }
         .thumbnail:hover {
             transform: scale(1.01);
@@ -222,21 +233,21 @@
       display: flex;
       justify-content: space-around;
       display: flex;
-        justify-content: center;
-        align-items: center;
-        .thumbnail {
-          border-radius: $project-border-radius;
-          width: 15%;
-          height: 15%;
-          margin-right: 10px;
-          transition: all ease 0.2s;
-          margin: 10px !important;
-        }
-        .thumbnail:hover {
-            transform: scale(1.01);
-            box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.1);
-            transition: ease 0.2s;
-        }
+      justify-content: center;
+      align-items: center;
+      .thumbnail {
+        border-radius: $project-border-radius;
+        height: 50px;;
+        margin-right: 10px;
+        transition: all ease 0.2s;
+        margin: 10px !important;
+        padding: 0px;
+      }
+      .thumbnail:hover {
+          transform: scale(1.01);
+          box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.1);
+          transition: ease 0.2s;
+      }
     }
   }
   .product-show-mobile {
@@ -283,7 +294,6 @@
     }
   }
 
-  .mobile-link{
-    margin: 20px;
-  }
+.mobile-link{
+  margin: 20px;
 }

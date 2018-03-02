@@ -38,7 +38,7 @@
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
           <div class="submit-div-stage">
-            <%= f.submit "Demande de réservation", class: "btn btn-primary stage-btn" %>
+            <%= f.submit "demander une réservation", class: "btn btn-primary stage-btn" %>
           </div>
         <% end %>
         <div class="text-container">
@@ -76,7 +76,7 @@
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
           <div class="submit-div-stage">
-            <%= f.submit "Demande de réservation", class: "btn btn-primary stage-btn" %>
+            <%= f.submit "demander une réservation", class: "btn btn-primary stage-btn" %>
           </div>
         <% end %>
         <div class="wrapper">
@@ -96,6 +96,7 @@
     $(document).on('ready', function() {
       var jsArray = <%= @first_possible_day.to_json.html_safe %>
       var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>
+      var jsArray = <%= @first_possible_day.to_json.html_safe %>
 
       $('#datetimepicker1, #datetimepicker2').datetimepicker({
         disabledDates: <%= raw @disabled_dates%>,
