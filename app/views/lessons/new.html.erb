@@ -68,7 +68,8 @@
               <input type='text' class="form-control" name="lesson[start]" placeholder="JJ.MM.AAAA"/>
             </div>
           </div>
-          <%= f.input :duration, collection: [ENV['MINDURATION'],ENV['MAXDURATION']], label: "Durée en jours", selected: ENV['MINDURATION'] %>
+          <%= f.hidden_field :duration, value: 1 %>
+          <%= f.input :moment, collection: ["matin", "après-midi", "journée"], label: "Durée", selected: "journée" %>
           <% if user_signed_in? %>
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
