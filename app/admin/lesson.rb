@@ -124,7 +124,7 @@ ActiveAdmin.register Lesson do
       amount = 0.0
       if lesson.moment == "matin"
        amount = ENV['TWODAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
-      elsif lesson.moment == "matin"
+      elsif lesson.moment == "après-midi"
        amount = ENV['FIVEDAYSLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
       else
         amount = ENV['FULLLESSONPRICE'].to_f * lesson.student.to_f * ENV['LESSONDEPOSITRATIO'].to_f
