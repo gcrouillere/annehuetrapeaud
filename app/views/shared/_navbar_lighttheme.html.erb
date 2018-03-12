@@ -21,10 +21,10 @@
         <%= link_to new_lesson_path do %>
           <span>Réserver un stage</span>
         <% end %>
+        <a href="#" id="lighttheme-filter-search"><%= image_tag "search.svg", class: "searchimg"%></a>
         <%= link_to info_path do %>
           <span>Infos</span>
         <% end %>
-        <a href="#" id="lighttheme-filter-search"><%= image_tag "search.svg", class: "searchimg"%></a>
         <% if session[:order].present? %>
           <% if Order.where(id: session[:order]).present? %>
             <% if Order.where(id: session[:order]).first.state != "lost" %>
@@ -53,6 +53,15 @@
         <%= link_to info_path do %>
           <span>Infos</span>
         <% end %>
+        <% if session[:order].present? %>
+          <% if Order.where(id: session[:order]).present? %>
+            <% if Order.where(id: session[:order]).first.state != "lost" %>
+              <%= link_to order_path(Order.find(session[:order])) do %>
+                <span><%= image_tag "cart.svg", class: "lightcart"%></span>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
   <% end %>
@@ -78,13 +87,11 @@
       <%= link_to info_path do %>
         <%= image_tag "info.svg", class: "infoimg"%>
       <% end %>
-      <% if user_signed_in? %>
-        <% if session[:order].present? %>
-          <% if Order.where(id: session[:order]).present? %>
-            <% if Order.where(id: session[:order]).first.state != "lost" %>
-              <%= link_to order_path(Order.find(session[:order])) do %>
-                <span><%= image_tag "cart.svg", class: "lightcart"%></span>
-              <% end %>
+      <% if session[:order].present? %>
+        <% if Order.where(id: session[:order]).present? %>
+          <% if Order.where(id: session[:order]).first.state != "lost" %>
+            <%= link_to order_path(Order.find(session[:order])) do %>
+              <span><%= image_tag "cart.svg", class: "lightcart"%></span>
             <% end %>
           <% end %>
         <% end %>
