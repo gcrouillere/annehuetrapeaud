@@ -1,8 +1,8 @@
 <% content_for(:description) do %>
-  Vendez vos produits en ligne ! Site de e-commerce configurable. Créez votre compte et visualisez votre futur site de vente en ligne de vos produits.
+  <%=t(:home_description)%>
 <% end %>
 <% content_for(:title_tag) do %>
-  Vente de <%=ENV['MODEL']%> - <%=ENV['FIRSTNAME']%> <%=ENV['LASTNAME'] %>
+  <%= t(:home_title)%>
 <% end %>
 
 <%= render 'shared/darktheme_home_pics' %>
@@ -12,7 +12,7 @@
 <!-- LAPTOP -->
   <div class="hidden-xs">
     <div class="banner-darktheme">
-    <%= photo_update('darktheme1photo', 100, '', '', 30, '.darktheme1photo', "Mise à jour photo d'accueil 1")%>
+    <%= photo_update('darktheme1photo', 100, '', '', 30, '.darktheme1photo', "Mise à jour photo d'accueil 1") %>
       <%= cl_image_tag @darktheme1photopath, class: "photo1", alt: "Céramique n° 1 de la page d'accueil"%>
       <div class="photos2and3">
         <div class="photo2"></div>
@@ -82,14 +82,39 @@
   {
     "@context": "http://schema.org",
     "@type": "ArtGallery",
-    "name": "Les <%="#{ENV['MODEL']} de #{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%>",
-    "description": "Online craft store",
-    "openingHours": "Mo-Fr 09:00-18:00",
-    "telephone": "<%= ENV['TELEPHONE']%>",
+    "image": ["<%=request.original_url%><%= image_path ENV['HOMEPIC']%>"],
+    "@id": "<%=request.original_url%>",
+    "name": "<%=t(:les_produits_de_machin, product:"#{ENV['MODEL']}", name: "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}")%>",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "12 rue de la paix",
+      "addressLocality": "Paris",
+      "addressRegion": "IDF",
+      "postalCode": "75000",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": <%= ENV['LAT'].to_f %>,
+      "longitude": <%= ENV['LAT'].to_f %>
+    },
     "url": "<%=request.original_url%>",
-    "image": "<%=request.original_url%><%= image_path ENV['HOMEPIC']%>",
-    "address":"<%= ENV['ADDRESS'].gsub(/[+]/, ' ')%>",
-    "priceRange":"20€ à 800€"
+    "telephone": "<%= ENV['TELEPHONE']%>",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "10:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Saturday","Sunday"],
+        "opens": "closed",
+        "closes": "closed"
+      }
+    ],
+   "priceRange":"20€ à 800€"
   }
   </script>
 <% end %>

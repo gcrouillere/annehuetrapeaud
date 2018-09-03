@@ -1,9 +1,9 @@
 /* -------------------------------------
  * Fonts type
  * ------------------------------------- */
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
+@import url("https://fonts.googleapis.com/css?family=Lato:400,300,700|Raleway:400,100,300,700,500");
 // @import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,600,700|Nanum+Myeongjo:400,700,800");
-$base-font: "Open Sans", "Helvetica", "sans-serif";
+$base-font: "Lato", "Helvetica", "sans-serif";
 $header-font: "Raleway", "Helvetica", "sans-serif";
 
 /* -------------------------------------
@@ -12,7 +12,7 @@ $header-font: "Raleway", "Helvetica", "sans-serif";
  //Main :
 $primary: #0FA5AC;
 $primary-opacified: rgba(15,165,172,0.3);
-$navbar: linear-gradient(to right, #fefefe, #878787);
+$navbar: linear-gradient(to right, #f4feff, #c5d4d6);
 $filter-background: #0FA5AC;
 $h2card: #097377;
 $body: #fbfbfb;

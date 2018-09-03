@@ -2,7 +2,7 @@ Bonjour <%= @lesson.user.first_name %> <%= @lesson.user.last_name %>,
 
 Merci pour le paiement des arrhes pour votre stage. Votre stage est validé.
 
-Date: <%= "#{@lesson.start.day}/#{@lesson.start.month}/#{@lesson.start.year}" %> (<%= "#{@lesson.moment}" %>).
+Date : <%= l @lesson.start, format: :short %>, pour une durée de <%= "#{@lesson.duration}" %> (<%= "#{@lesson.moment}" %>).
 
 Cordialement
 

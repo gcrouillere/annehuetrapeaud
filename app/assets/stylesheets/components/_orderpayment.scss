@@ -57,6 +57,40 @@
   }
 }
 
+h3.payment-choice {
+  margin: 30px 0 25px 0;
+}
+
+.payment-methods {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .payments-separator {
+    height: 115px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .paypal {
+    margin: 0px 20px 0 10px;
+    width: 266px;
+    height: 143px;
+    .paypal-logo {
+      width: 65px;
+    }
+    .paypal-secure {
+      margin-top: -4px;
+    }
+  }
+}
+
+@media all and (max-width: 700px) {
+  .payment-methods {
+    display: block;
+    .paypal {
+      margin: 0 auto;
+    }
+  }
+}
+
 // MOBILE
 
 @media all and (max-width: 700px) {

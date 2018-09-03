@@ -1,5 +1,8 @@
 .devise-container {
   min-height: calc(100vh - 90px);
+  #country {
+      -webkit-appearance: none;
+    }
   .content-devise {
     margin-top: 30px;
     margin-bottom: 60px;
@@ -49,6 +52,11 @@
     }
     .devise-bottom-link:hover {
       color: darken($primary, 8%);
+    }
+    .user_consented {
+      a {
+        text-decoration: underline;
+      }
     }
   }
 }

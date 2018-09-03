@@ -1,6 +1,6 @@
 Bonjour <%= @lesson.user.first_name %> <%= @lesson.user.last_name %>,
 
-Votre demande de stage est confirmée. Date: <%= "#{@lesson.start.day}/#{@lesson.start.month}/#{@lesson.start.year}" %> (<%= "#{@lesson.moment}" %>).
+Votre demande de stage est confirmée. Date : <%= l @lesson.start, format: :short %> (<%= "#{@lesson.moment}" %>).
 
 Vous devez maintenant payer les arrhes pour qu'elle soit définitivement validée : https://<%=ENV['APPNAME']%>.herokuapp.com/lessons/<%= @lesson.id %>
 

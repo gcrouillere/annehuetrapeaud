@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!, unless: :devise_controller?
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_locale
   before_action :retrieve_admin
   before_action :check_theme
   before_action :uniq_categories
@@ -10,19 +11,28 @@ class ApplicationController < ActionController::Base
   after_action :store_location
 
   def default_url_options
-  { host: ENV["HOST"] || "localhost:3000" }
+  { host: ENV["HOST"] || "localhost:3000", locale: I18n.locale }
+  end
+
+  def set_locale
+    if params[:change].present? || params[:locale].present?
+      I18n.locale = params[:locale]
+    else
+      locale_trial = extract_locale_from_accept_language_header
+      ["fr", "en"].include? locale_trial ? I18n.locale = locale_trial : I18n.locale = "en"
+    end
   end
 
   def retrieve_admin
-    @admin = User.where(admin: true).first
+    @admin = ::User.where(admin: true).first
   end
 
   def check_theme
-    @active_theme = Theme.where(active: true).first || Theme.create(active: true, name: "default")
+    @active_theme = ::Theme.where(active: true).first || ::Theme.create(active: true, name: "default")
   end
 
   def uniq_categories
-    @uniq_categories = Ceramique.all.map do |ceramique|
+    @uniq_categories = ::Ceramique.all.map do |ceramique|
       ceramique.category.name
     end
     @uniq_categories = @uniq_categories.uniq.sort
@@ -51,6 +61,10 @@ class ApplicationController < ActionController::Base
     session[:previous_url] || root_path
   end
 
+  def after_sign_out_path_for(resource_or_scope)
+    request.referer
+  end
+
   # 2 - Permitted parameters for sign_in/up
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb
@@ -60,11 +74,13 @@ class ApplicationController < ActionController::Base
       :adress,
       :zip_code,
       :city,
+      :country,
       :provider,
       :uid,
       :facebook_picture_url,
       :token,
       :token_expiry,
+      :consented
       ])
 
     # For additional in app/views/devise/registrations/edit.html.erb
@@ -74,7 +90,14 @@ class ApplicationController < ActionController::Base
       :adress,
       :zip_code,
       :city,
+      :country,
       ])
+  end
+
+  private
+
+  def extract_locale_from_accept_language_header
+    request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
   end
 
   protected

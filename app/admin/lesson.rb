@@ -5,8 +5,23 @@ ActiveAdmin.register Lesson do
   menu priority: 5
   config.filters = false
 
-  index_as_calendar ({:ajax => false}) do |lesson|
+  index do
+    render 'current_week_lessons'
+    column "Début" do |lesson|
+       "#{lesson.start.day} #{lesson.start.strftime("%B")} #{lesson.start.year}"
+    end
+    column :student
+    column "Client" do |lesson|
+      lesson.user.email
+    end
+    column :confirmed
+    column "Payée ?" do |lesson|
+      order = Order.where(lesson: lesson).first
+      order.present? ? order.state == "paid" : false
+    end
+  end
 
+  index_as_calendar ({:ajax => false}) do |lesson|
     #Caractéristiques des évènements à afficher
     confirmation = ""
     lesson.confirmed ? confirmation = "oui" : confirmation = "non"
@@ -53,6 +68,8 @@ ActiveAdmin.register Lesson do
 
     def index
       super do |format|
+        @current_week_lessons_a = Lesson.where("confirmed = ? AND start >= ?", true, Time.now - 20 * 3600 * 24).joins(:order).order(start: :asc).where("lesson_id IS NOT NULL")
+        @pending_lessons = Lesson.where("confirmed = ? AND start >= ?", false, Time.now)
         Lesson.all.each do |lesson|
           if !lesson.confirmed? && lesson.start < Time.now
             lesson.destroy
@@ -133,7 +150,8 @@ ActiveAdmin.register Lesson do
         state: 'pending',
         amount_cents: amount * 100,
         user: lesson.user,
-        lesson: lesson
+        lesson: lesson,
+        take_away: false
       )
     end
 
