@@ -104,7 +104,7 @@ Rails.application.configure do
   }
 
   Dynopoker.configure do |config|
-    config.address = 'https://'+ENV['APPNAME']+'.herokuapp.com'
+    config.address = 'https://annehuetrapeaud.herokuapp.com/'
     config.poke_frequency = 600 # default is 1800s (30min)
     # config.enable = false # default is true
   end
