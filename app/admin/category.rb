@@ -18,7 +18,7 @@ ActiveAdmin.register Category do
 
   controller do
 
-   def create
+    def create
       super do |format|
         redirect_to admin_categories_path and return if resource.valid?
       end
@@ -32,6 +32,7 @@ ActiveAdmin.register Category do
         redirect_to admin_categories_path and return
       end
       super do |format|
+        redirect_to admin_categories_path and return
       end
     end
 
