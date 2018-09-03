@@ -20,13 +20,13 @@
         <%= facebook_share_id("facebookshare") %>
         <%= simple_form_for @lesson do |f| %>
           <%= f.input :student, collection: ENV['MINBOOKING'].to_i..ENV['CAPACITY'].to_i, label: "Nombre de participants", selected: ENV['MINBOOKING'].to_i %>
-          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> Jour de stage</label>
+          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> <%=t(:first_day)%></label>
           <div class="form-group">
             <div class='input-group date' id='datetimepicker1'>
               <span class="input-group-addon">
-                <span class="fa fa-calendar-o"></span>
+                <i class="far fa-calendar-alt"></i>
               </span>
-              <input type='text' class="form-control" name="lesson[start]" placeholder="Cliquez sur l'icône calendrier pour sélectionner une date"/>
+              <input type='text' class="form-control" name="lesson[start]" placeholder="<%=t(:clic_on_calendar)%>"/>
             </div>
           </div>
           <%= f.hidden_field :duration, value: 1 %>
@@ -35,7 +35,8 @@
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
           <div class="submit-div-stage">
-            <%= f.submit "demander une réservation", class: "btn btn-primary stage-btn" %>
+            <input type="hidden" name="locale" value="<%= I18n.locale%>">
+            <%= f.submit t(:course_request), class: "btn btn-primary stage-btn" %>
           </div>
         <% end %>
         <div class="text-container">
@@ -58,14 +59,14 @@
       <div class="stage-mobile">
         <%= facebook_share_id("facebooksharemobile") %>
         <%= simple_form_for @lesson do |f| %>
-          <%= f.input :student, collection: ENV['MINBOOKING'].to_i..ENV['CAPACITY'].to_i, label: "Nombre de participants", selected: ENV['MINBOOKING'].to_i %>
-          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> 1er jour de stage</label>
+          <%= f.input :student, collection: ENV['MINBOOKING'].to_i..ENV['CAPACITY'].to_i, selected: ENV['MINBOOKING'].to_i %>
+          <label class="control-label select required" for="lesson_student"><abbr title="required">*</abbr> <%=t(:first_day)%></label>
           <div class="form-group">
             <div class='input-group date' id='datetimepicker2'>
               <span class="input-group-addon">
-                <span class="fa fa-calendar-o"></span>
+                <i class="far fa-calendar-alt"></i>
               </span>
-              <input type='text' class="form-control" name="lesson[start]" placeholder="JJ.MM.AAAA"/>
+              <input type='text' class="form-control" name="lesson[start]" placeholder="<%=t(:clic_on_calendar_mobile)%>"/>
             </div>
           </div>
           <%= f.hidden_field :duration, value: 1 %>
@@ -74,7 +75,8 @@
             <%= f.hidden_field :user_id, value: current_user.id %>
           <% end %>
           <div class="submit-div-stage">
-            <%= f.submit "demander une réservation", class: "btn btn-primary stage-btn" %>
+            <input type="hidden" name="locale" value="<%= I18n.locale%>">
+            <%= f.submit t(:course_request), class: "btn btn-primary stage-btn" %>
           </div>
         <% end %>
         <div class="wrapper">
@@ -91,10 +93,9 @@
 
 <% content_for(:after_js) do %>
   <script>
-    $(document).on('ready', function() {
-      var jsArray = <%= @first_possible_day.to_json.html_safe %>
-      var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>
-      var jsArray = <%= @first_possible_day.to_json.html_safe %>
+    $(document).ready(function() {
+      var jsArray = <%= @first_possible_day.to_json.html_safe %>;
+      var confirmed_course_js_format = <%= raw @confirmed_course_js_format%>;
 
       $('#datetimepicker1, #datetimepicker2').datetimepicker({
         disabledDates: <%= raw @disabled_dates%>,
@@ -123,16 +124,20 @@
         });
     });
   </script>
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "http://schema.org",
-    "@type": "TouristAttraction",
+    "@type": "Course",
     "name": "Stage de poterie",
     "description": "Fabriquez vos poteries avec Anne Huet Rapeaud. Journée ou 1/2 journée. Paiement des arrhes par CB en ligne.",
-    "url": "<%=request.original_url%>",
+    "provider": {
+      "@type": "Organization",
+      "name": "Anne Huet Rapeaud",
+      "sameAs": "<%=request.original_url%>"
+    }
   }
-  </script>
-    <script
+</script>
+<script
   type="text/javascript"
   async defer
   src="//assets.pinterest.com/js/pinit.js"

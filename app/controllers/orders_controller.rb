@@ -16,31 +16,36 @@ class OrdersController < ApplicationController
     if params[:quantity].to_i <= @ceramique.stock
       @basketline = Basketline.create(ceramique: @ceramique, quantity: params[:quantity].to_i, order: @order)
       @ceramique.update(stock: @ceramique.stock - @basketline.quantity)
-      costs = Amountcalculation.new(@order).calculate_amount(@order)
-      @order.update(amount: costs[:total], port: costs[:port], ceramique: collect_ceramiques_for_stats)
-      flash[:notice] = "Votre panier sera conservé #{(ENV['BASKETDURATION'].to_f * 60).to_i } min"
+      costs = Amountcalculation.new(@order).calculate_amount(@order, current_user)
+      @order.update(amount: costs[:total], port: costs[:port], ceramique: collect_ceramiques_for_stats, weight: costs[:weight])
+      flash[:notice] = t(:basket_duration, duration: "#{(ENV['BASKETDURATION'].to_f * 60).to_i }")
       redirect_to order_path(@order)
     else
-      flash[:alert] = "Désolé, il n'y a que #{@ceramique.stock} en stock"
+      flash[:alert] = t(:stock_limit, stock: "#{@ceramique.stock}")
       redirect_to ceramique_path(@ceramique)
     end
   end
 
   def show
     if Order.find(params[:id])
-      if Order.find(params[:id]).state == "pending"
-        @order = Order.where(state: 'pending', id: params[:id].to_i).first
-        @order.update(user: current_user) if current_user
+      @order = Order.find(params[:id])
+      if @order.state == "pending" || @order.state == "payment page"
+        if (current_user || @order.user.present?) && !@order.lesson.present?
+          known_user = current_user || @order.user
+          costs = Amountcalculation.new(@order).calculate_amount(@order, known_user)
+          @order.update(amount: costs[:total], port: costs[:port], weight: costs[:weight], user: known_user)
+        end
         @amount = @order.amount
         @port = @order.port
+        @weight = @order.weight
         render "show_#{@active_theme.name}"
       else
-        flash[:notice] = "Votre panier a expiré"
-        redirect_back(fallback_location: root_path)
+        flash[:notice] = t(:expired_basket)
+        redirect_to ceramiques_path
       end
     else
-      flash[:notice] = "Votre panier a expiré"
-      redirect_back(fallback_location: root_path)
+      flash[:notice] = t(:expired_basket)
+      redirect_to ceramiques_path
     end
   end
 
@@ -50,8 +55,8 @@ class OrdersController < ApplicationController
     @ceramique = @basketline.ceramique
     @ceramique.update(stock: @ceramique.stock + @basketline.quantity)
     @basketline.destroy
-    costs = Amountcalculation.new(@order).calculate_amount(@order)
-    @order.update(amount: costs[:total], port: costs[:port], ceramique: @order.ceramique.sub(@ceramique.name+",",""))
+    costs = Amountcalculation.new(@order).calculate_amount(@order, current_user)
+    @order.update(amount: costs[:total], port: costs[:port], weight: costs[:weight], ceramique: @order.ceramique.sub(@ceramique.name+",",""))
     if @order.basketlines.present?
       redirect_to order_path(@order)
     else
@@ -64,7 +69,8 @@ class OrdersController < ApplicationController
   private
 
   def create_order
-    order  = Order.create!(ceramique: @ceramique.name, state: 'pending')
+    order  = Order.new(ceramique: @ceramique.name, state: 'pending', take_away: false)
+    order.save
     session[:order] = order.id
     return order
   end

@@ -55,15 +55,19 @@ ActiveAdmin.register Calendarupdate do
       end
 
       super do |format|
-        last_calendar = Calendarupdate.last
-        Lesson.create(
+        last_calendar = Calendarupdate.new(
+          period_start: p_start,
+          period_end: p_end,
+          )
+        last_calendar.save
+        last_lesson = Lesson.new(
           start: p_start,
           student: ENV['CAPACITY'].to_i,
           duration: (p_end - p_start).to_i + 1,
           user: current_user,
           confirmed: true,
           )
-        last_lesson = Lesson.last
+        last_lesson.save
         last_calendar.update(lesson: last_lesson)
         redirect_to admin_lessons_path and return
       end

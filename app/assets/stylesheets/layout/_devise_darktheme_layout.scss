@@ -1,5 +1,5 @@
 .body-devise-darktheme {
-  background: #171717;
+  background: #242424;
   .new-session-h4 {
     color: white;
   }
@@ -7,12 +7,15 @@
 
 .devise-container-darktheme {
     min-height: calc(100vh - 90px);
+    #country {
+      -webkit-appearance: none;
+    }
   .content-devise {
     margin-top: 130px;
     margin-bottom: 60px;
     margin-right: 10px;
     margin-left: 10px;
-    background: #171717;
+    background: #242424;
     padding: $padding-large;
     border-radius: 1px;
     border: 1px solid $primary-opacified;
@@ -87,6 +90,11 @@
     }
     .devise-bottom-link:hover {
       color: #bfbfbf;
+    }
+    .user_consented {
+      a {
+        text-decoration: underline;
+      }
     }
   }
 }

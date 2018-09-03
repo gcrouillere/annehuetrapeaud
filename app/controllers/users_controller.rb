@@ -14,18 +14,17 @@ class UsersController < ApplicationController
   def subscribe
     unless session[:email]
       if Regexp.new('\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]{2,}\z').match(params[:user][:email]) && params[:user][:first_name] != "" && params[:user][:tracking] != ""
-        @user = User.create(subscribe_params)
+        @user = User.user_subscribe(user_params)
         if request.referrer.match("contact")
           SubscribeMailer.web_message(@user, @admin).deliver_now
         else
           SubscribeMailer.subscribe(@user, @admin).deliver_now
         end
-        @user.destroy
         session[:email] = params[:user][:email]
-        flash[:notice] = "Merci pour votre message"
+        flash[:notice] = t(:message_thank)
         redirect_to request.referrer
       else
-        flash[:alert] = "Les champs ne sont pas remplis correctement"
+        flash[:alert] = t(:incorrect_fields)
         redirect_to request.referrer
       end
     end
@@ -58,12 +57,9 @@ class UsersController < ApplicationController
       :darktheme2photo,
       :darktheme3photo,
       :darktheme4photo,
+      :country,
       homerightphotos: []
     )
-  end
-
-  def subscribe_params
-    params.require(:user).permit(:email, :first_name, :tracking, last_name: "Doe")
   end
 
 end

@@ -21,6 +21,8 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= include_gon %>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <meta name="google-site-verification" content="v6l89V9vrshQNOTxoFGZIg_cAdFHeUFHLdx-FAF2yB8" />
     <meta name="msvalidate.01" content="A2005042705811D0F9A1F93173061E82" />
   </head>
@@ -43,6 +45,7 @@
         </div>
         <%= render "shared/lighttheme_filter" %>
         <%= render "shared/footer_#{@active_theme.name}" %>
+        <%= render 'shared/algolia_search' %>
     <% elsif  @active_theme.name == "darktheme" %>
       <div class="body-<%=@active_theme.name%>">
         <%= render "shared/navbar_#{@active_theme.name}" %>

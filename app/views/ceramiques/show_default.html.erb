@@ -60,26 +60,26 @@
                     <h3 class="previous-price"><%= humanized_money(@ceramique.price)%> <%= currency_symbol %></h3>
                   <% end %>
                 <% end %>
-                <% if  @ceramique.stock > 0 %>
-                  <form action="/orders" method="post" authenticity_token="true" class="form">
-                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-                    <div class="qte">
-                      <label for="quantity">Quantité </label>
-                      <select name="quantity">
-                        <% for i in 1..@ceramique.stock %>
-                          <option value="<%= i %>"><%= i %></option>
-                        <% end %>
-                      </select>
-                    </div>
-                    <input type="hidden" name="ceramique" value="<%= @ceramique.id%>">
-                    <button type="submit" class="pull-right btn btn-primary order">
-                      <i class="fa fa-plus""></i> Ajouter au panier
-                    </button>
-                  </form>
-                <% else %>
-                    <h2 class="stock0">Stock épuisé</h2>
-                <% end %>
-              </div>
+              <% if  @ceramique.stock > 0 %>
+                <form action="/orders" method="post" authenticity_token="true" class="form">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <div class="qte">
+                    <label for="quantity"><%= t(:quantity)%> </label>
+                    <select name="quantity">
+                      <% for i in 1..@ceramique.stock %>
+                        <option value="<%= i %>"><%= i %></option>
+                      <% end %>
+                    </select>
+                  </div>
+                  <input type="hidden" name="ceramique" value="<%= @ceramique.id%>">
+                  <input type="hidden" name="locale" value="<%= I18n.locale%>">
+                  <button type="submit" class="pull-right btn btn-primary order">
+                    <i class="fa fa-plus""></i> <%= t(:add_to_basket) %>
+                  </button>
+                </form>
+              <% else %>
+                  <h2 class="stock0"><%= t(:out_of_stock) %></h2>
+              <% end %>
             </div>
           </div>
 
@@ -93,7 +93,7 @@
 
     <div class="row">
       <div class="col-sm-12 same-category-products">
-          <h2>Retrouvez d'autres produits dans la même catégorie: </h2>
+          <h2><%= t(:same_category_products)%></h2>
           <div class="same-category-products-cards">
             <% @same_category_products.each_with_index do |ceramique, index|%>
               <% if index == 0 || (index)%3 == 0 %>
@@ -127,7 +127,7 @@
   </div>
 
 <!-- MOBILE -->
-  <!-- <div class="hidden-md hidden-lg"> -->
+
     <div class="row">
       <div class="col-xs-12 hidden-md hidden-lg">
 
@@ -167,7 +167,7 @@
                 <form action="/orders" method="post" authenticity_token="true" class="form">
                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                   <div class="qte">
-                    <label for="quantity">Qté </label>
+                    <label for="quantity"><%= t(:qte)%> </label>
                     <select name="quantity">
                       <% for i in 1..@ceramique.stock %>
                         <option value="<%= i %>"><%= i %></option>
@@ -175,43 +175,50 @@
                     </select>
                   </div>
                   <input type="hidden" name="ceramique" value="<%= @ceramique.id%>">
+                  <input type="hidden" name="locale" value="<%= I18n.locale%>">
                   <button type="submit" class="pull-right btn btn-primary order">
                     <i class="fa fa-plus""></i> <i class="fa fa-shopping-cart"></i>
                   </button>
                 </form>
               <% else %>
-                  <h2 class="stock0">Stock épuisé</h2>
+                  <h2 class="stock0"><%= t(:out_of_stock) %></h2>
               <% end %>
             </div>
           </div>
         </div>
 
-        <div class="mobile-link">
-          <%= link_to ceramiques_path do %>
-            <span><i class="fa fa-arrow-right"></i> Liste des <%= ENV['MODEL'].capitalize%></span>
-          <% end %>
-        </div>
-
       </div>
     </div>
-  <!-- </div> -->
+
 
 </div>
 
 <% content_for(:after_js) do %>
   <script type="application/ld+json">
   {
-    "@context": "http://schema.org",
+    "@context": "http://schema.org/",
     "@type": "Product",
     "name": "<%=@ceramique.name.capitalize%>",
+    "image": [
+      "<%=cl_image_path @ceramique.photo1.path%>"
+     ],
     "description": "<%=@ceramique.description%>",
+    "brand": {
+      "@type": "Thing",
+      "name": "<%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%>"
+    },
     "offers": {
       "@type": "Offer",
+      "priceCurrency": "EUR",
       "price": "<%= humanized_money(@ceramique.price)%>",
-      "priceCurrency": "€"
-    },
-    "url": "<%=request.original_url%>",
-    "image": "<%=cl_image_path @ceramique.photo1.path%>"
+      "priceValidUntil": "2020-12-12",
+      "itemCondition": "http://schema.org/UsedCondition",
+      "availability": "http://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "<%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%>"
+      }
+    }
   }
   </script>
   <script

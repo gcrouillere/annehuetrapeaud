@@ -1,8 +1,8 @@
 <% content_for(:description) do %>
-Vendez vos produits en ligne ! Site de e-commerce configurable. Affichez sur cette page des informations vous concernant : biographie, techniques utilisées.
+  <%= t(:info_description)%>
 <% end %>
 <% content_for(:title_tag) do %>
-  Page bio de votre site de e-commerce
+  <%= t(:info_title)%>
 <% end %>
 
 <%= render 'shared/info_pics' %>
@@ -87,14 +87,39 @@ Vendez vos produits en ligne ! Site de e-commerce configurable. Affichez sur cet
     {
       "@context": "http://schema.org",
       "@type": "ArtGallery",
-      "name": "Les <%="#{ENV['MODEL']} de #{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%>",
-      "description": "Online craft store",
-      "openingHours": "Mo-Fr 09:00-18:00",
-      "telephone": "<%= ENV['TELEPHONE']%>",
+      "image": ["<%=request.original_url%><%= image_path ENV['HOMEPIC']%>"],
+      "@id": "<%=request.original_url%>",
+      "name": "<%=t(:les_produits_de_machin, product:"#{ENV['MODEL']}", name: "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}")%>",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "12 rue de la paix",
+        "addressLocality": "Paris",
+        "addressRegion": "IDF",
+        "postalCode": "75000",
+        "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": <%= ENV['LAT'].to_f %>,
+        "longitude": <%= ENV['LAT'].to_f %>
+      },
       "url": "<%=request.original_url%>",
-      "image":"<%=request.original_url%><%= image_path ENV['HOMEPIC']%>"
-      "address":"<%= ENV['ADDRESS'].gsub(/[+]/, ' ') %>",
-      "priceRange":"20€ à 800€"
+      "telephone": "<%= ENV['TELEPHONE']%>",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "10:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday","Sunday"],
+          "opens": "closed",
+          "closes": "closed"
+        }
+      ],
+     "priceRange":"20€ à 800€"
     }
   </script>
 <% end %>
