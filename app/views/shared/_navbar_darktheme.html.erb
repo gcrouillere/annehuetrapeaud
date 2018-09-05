@@ -25,7 +25,7 @@
         <%= link_to contact_path do %>
           <span><%=t(:info_link)%></span>
         <% end %>
-        <%= link_to articles_path do %>
+        <%= link_to "http://www.anne-huet-rapeaud.com/", target: "blank" do %>
           <span><%=t(:blog_link)%></span>
         <% end %>
         <%= link_to new_lesson_path do %>
@@ -73,7 +73,7 @@
         <%= link_to contact_path do %>
           <span><%=t(:info_link)%></span>
         <% end %>
-        <%= link_to articles_path do %>
+        <%= link_to "http://www.anne-huet-rapeaud.com/", target: "blank" do %>
           <span><%=t(:blog_link)%></span>
         <% end %>
         <%= link_to new_lesson_path do %>
@@ -127,7 +127,7 @@
       <%= link_to contact_path do %>
         <%= image_tag "info-white.svg", class: "infoimg"%>
       <% end %>
-      <%= link_to articles_path do %>
+      <%= link_to "http://www.anne-huet-rapeaud.com/", target: "blank" do %>
         <%= image_tag "blog-white.svg", class: "blogimg"%>
       <% end %>
       <%= link_to new_lesson_path do %>
@@ -142,23 +142,6 @@
           <% end %>
         <% end %>
       <% end %>
-
-        <div class="dropdown">
-          <a class="dropdown-toggle" type="button" data-toggle="dropdown">
-              <%= image_tag "#{I18n.locale.upcase}.svg", class: "flag"%>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-langages">
-            <li><%= link_to params.merge(locale: "en", change: true).permit(:locale, :change) do %>
-                  <%= image_tag "EN.svg", class: "flag"%>
-                <% end %>
-            </li>
-            <li><%= link_to params.merge(locale: "fr", change: true).permit(:locale, :change) do %>
-                  <%= image_tag "FR.svg", class: "flag"%>
-                <% end %>
-            </li>
-          </ul>
-        </div>
 
     </div>
   </div>
