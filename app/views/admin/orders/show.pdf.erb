@@ -6,7 +6,8 @@
 <h3><%="#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}"%></h3>
 <h3>Tel : <%= ENV['TELEPHONE']%></h3>
 <h3>Adresse : <%= ENV['ADDRESS'].gsub("+"," ")%></h3>
-<h3>SIRET : 84088985100019 </h3>
+<h3>SIRET : 5388744700001 </h3>
+<h3>APE : 2341Z </h3>
 <br>
 <h2>Client : <%= resource.user.first_name%> <%= resource.user.last_name%></h2>
 <h3>Adresse : <%= "#{resource.user.adress} #{resource.user.zip_code} - #{resource.user.city}"%></h3>
@@ -35,7 +36,7 @@
         <td></td>
         <td></td>
         <td><strong>Total HT : </strong><%= humanized_money(resource.amount * (1 - ENV['TVA'].to_f))  %> €</td>
-        <td><strong>Total TVA : </strong><%= humanized_money(resource.amount * ENV['TVA'].to_f) %> €</td>
+        <td><strong>Total TVA : </strong><%= humanized_money(resource.amount * ENV['TVA'].to_f) %> €. TVA non applicable (article 293 B du CGI)</td>
         <td></td>
       </tr>
     </table>

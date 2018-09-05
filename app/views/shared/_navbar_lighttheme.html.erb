@@ -35,10 +35,6 @@
         <%= link_to new_lesson_path do %>
           <span><%=t(:lesson_link)%></span>
         <% end %>
-        <a href="#" id="lighttheme-filter-search"><%= image_tag "search.svg", class: "searchimg"%></a>
-        <%= link_to info_path do %>
-          <span>Infos</span>
-        <% end %>
         <% if session[:order].present? %>
           <% if Order.where(id: session[:order]).present? %>
             <% if Order.where(id: session[:order]).first.state != "lost" %>
@@ -87,10 +83,6 @@
         <a href="#" id="lighttheme-filter-search"><%= image_tag "search.svg", class: "searchimg"%></a>
         <%= link_to new_lesson_path do %>
           <span><%=t(:lesson_link)%></span>
-        <% end %>
-        <a href="#" id="lighttheme-filter-search"><%= image_tag "search.svg", class: "searchimg"%></a>
-        <%= link_to info_path do %>
-          <span>Infos</span>
         <% end %>
         <% if session[:order].present? %>
           <% if Order.where(id: session[:order]).present? %>
@@ -147,9 +139,6 @@
         <span><%=t(:lesson_link_mobile)%></span>
       <% end %>
       <a href="#" id="lighttheme-filter-search-mobile"><%= image_tag "search.svg", class: "searchimg"%></a>
-      <%= link_to info_path do %>
-        <%= image_tag "info.svg", class: "infoimg"%>
-      <% end %>
       <% if session[:order].present? %>
         <% if Order.where(id: session[:order]).present? %>
           <% if Order.where(id: session[:order]).first.state != "lost" %>

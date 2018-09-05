@@ -13,7 +13,10 @@
 
   .banner-content {
     position: absolute;
-    top: 318px;
+    top: 218px;
+    @media all and (max-width: 1000px) {
+      top: 118px;
+    }
     left: calc(50% - 297px);
     text-align: center;
     color: $home-font-color;
@@ -44,7 +47,7 @@
       position: absolute;
       top: 100px;
       text-align: center;
-      left: calc(50% - 107px);
+      left: calc(50% - 132px);
       color: $home-font-color;
       padding: 0 10px;
       h1, h2, h3, p {
@@ -52,6 +55,7 @@
       }
       h1 {
         text-shadow: 1px 1px 0px $home-text-shadow;
+        font-size: 26px;
       }
       p {
         font-size: 21px;
@@ -136,4 +140,7 @@
   font-weight: 100;
   font-size: 20px;
   letter-spacing: 2px;
+  @media all and (max-width: 500px) {
+    font-size: 15px;
+  }
 }
