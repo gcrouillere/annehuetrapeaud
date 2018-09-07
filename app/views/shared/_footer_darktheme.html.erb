@@ -8,7 +8,7 @@
     </a>
     <div class="icone-bloc">
       <i class="fa fa-envelope"></i>
-      <h6 class="info-text middle-text info-text-1"><%=ENV['EMAIL']%></h6>
+      <h6 class="info-text middle-text info-text-1"><%= link_to "#{ENV['EMAIL']}", "mailto:#{ENV['EMAIL']}" %></h6>
     </div>
     <div class="icone-bloc">
       <i class="fa fa-phone"></i>

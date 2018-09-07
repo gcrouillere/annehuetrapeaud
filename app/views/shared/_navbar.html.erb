@@ -65,6 +65,9 @@
   <% else %>
     <div class="navbar-item">
       <div class="nav-bar-list">
+        <%= link_to root_path do %>
+          <span><%=t(:home_page)%></span>
+        <% end %>
         <%= link_to ceramiques_path do %>
           <span><%= t(:shop_link) %></span>
         <% end %>

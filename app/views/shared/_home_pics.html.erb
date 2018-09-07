@@ -1,7 +1,7 @@
 <% @homepicpath = image_path ENV['HOMEPIC'] %>
 <% @homepicpathmobile = image_path ENV['HOMEPICMOBILE'] %>
 <% if @admin %>
-  <% if  @admin.productphoto.present? %>
+  <% if @admin.productphoto.present? %>
     <% @homepicpath = cl_image_path @admin.productphoto.path %>
   <% end %>
   <% if  @admin.productphotomobile.present? %>
