@@ -5,6 +5,10 @@
     margin-top: 0px !important;
   }
   display: flex;
+  margin-top: 20px;
+  @media all and (max-width: 768px) {
+    margin-top: 0px !important;
+  }
   .contact-default {
     width: 25%;
     padding: 10px 0;

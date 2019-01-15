@@ -24,7 +24,7 @@
       </tr>
       <% resource.basketlines.each do |basketline| %>
       <tr>
-        <td><%= basketline.ceramique_name.capitalize %></td>
+        <td><%= basketline.ceramique_name.capitalize %>. ID: <%= basketline.ceramique_id_on_order %></td>
         <td><%= basketline.ceramique_qty %></td>
         <td><%= humanized_money(basketline.basketline_price * (1 - ENV['TVA'].to_f)) %> €</td>
         <td><%= humanized_money(basketline.basketline_price * ENV['TVA'].to_f) %> €</td>
@@ -39,6 +39,12 @@
         <td></td>
       </tr>
     </table>
+
+<% if ISO3166::Country.find_country_by_alpha2(resource.user.country).subregion.include? "urope" %>
+  <p>TVA non applicable (article 293 B du CGI)</p>
+<% else %>
+  <p>Exonération de TVA art 262-I du code général des impots"</p>
+<% end %>
 
 <% if resource.take_away %>
 <p> La commande est à retirer en magasin, pas de frais de port.</p>
