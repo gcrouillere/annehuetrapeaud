@@ -36,7 +36,8 @@ class Amountcalculation
       "https://api.laposte.fr/tarifenvoi/v1?type=colis&poids=#{total_weight}",
       headers: {"X-Okapi-Key" => ENV['LAPOSTE_API_KEY'] }
     )
-    return {total: amount_ceramique, port: tarif_colis[0]["price"].to_money, weight: total_weight}
+    tarif_colis.empty? ? port = ShippingCategory.where(alpha2: "FR").where("weight >= ?", total_weight).min.price_cents.to_f / 100 : port = tarif_colis[0]["price"]
+    return {total: amount_ceramique, port: port.to_money, weight: total_weight}
   end
 
 end

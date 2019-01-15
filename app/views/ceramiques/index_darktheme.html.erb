@@ -60,7 +60,13 @@
                 <% end %>
               </ul>
               <h3><%=t(:max_price)%></h3>
-              <input type="number" name="prix_max" min="0" class="prix">
+              <section class="range-slider">
+                <span class="rangeValues"></span>
+                <% max = (Ceramique.maximum(:price_cents) || 0)/ 100 %>
+                <% min = (Ceramique.minimum(:price_cents) || 0)/ 100 %>
+                <input name="prix_min" value="<%= min %>" min="<%= min %>" max="<%= max %>" step="1" type="range">
+                <input name="prix_max" value="<%= max %>" min="<%= min %>" max="<%= max %>" step="1" type="range">
+              </section>
             </div>
             <% if  params[:categories].present? || params[:prix_max].present? || params[:offer].present? || params[:search].present?%>
               <label class="label-search all"><input type="checkbox" name="all[]" value="all"><%=t(:display_all)%></label>
@@ -157,8 +163,14 @@
               <li><label class="label-search"><input type="checkbox" name="categories[]" value="<%= category %>"><%= category %></label></li>
             <% end %>
           </ul>
-          <h3>Prix max €</h3>
-          <input type="number" name="prix_max" min="0" class="prix">
+          <h3><%=t(:max_price)%></h3>
+          <section class="range-slider">
+            <span class="rangeValues"></span>
+            <% max = (Ceramique.maximum(:price_cents) || 0)/ 100 %>
+            <% min = (Ceramique.minimum(:price_cents) || 0)/ 100 %>
+            <input name="prix_min" value="<%= min %>" min="<%= min %>" max="<%= max %>" step="1" type="range">
+            <input name="prix_max" value="<%= max %>" min="<%= min %>" max="<%= max %>" step="1" type="range">
+          </section>
         </div>
         <% if  params[:categories].present? || params[:prix_max].present? || params[:offer].present? || params[:search].present?%>
           <label class="label-search all"><input type="checkbox" name="all[]" value="all">Tout afficher</label>
@@ -179,25 +191,8 @@
   </div>
 </div>
 
+<%= render 'shared/schema_org_jsons/ceramiques_index_json' %>
 <% content_for(:after_js) do %>
-  <script type="application/ld+json">
-  {
-    "@context": "http://schema.org/",
-    "@type": "Product",
-    "name": "<%=t(:les_produits_de_machin, product:"#{ENV['MODEL']}", name: "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}")%>",
-    "image": <%= raw @ceramiques.map {|ceramique| cl_image_path ceramique.photo1.path}.to_json %>,
-    "brand": {
-      "@type": "Thing",
-      "name": "<%= t(:name, name:"#{ENV['LASTNAME'].capitalize}")%>"
-    },
-    "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": "<%= humanized_money((@ceramiques.minimum(:price_cents) || 0) / 100) %>",
-      "highPrice": "<%= humanized_money((@ceramiques.maximum(:price_cents) || 0) / 100) %>",
-      "priceCurrency": "EUR"
-    }
-  }
-  </script>
   <script
   type="text/javascript"
   async defer
