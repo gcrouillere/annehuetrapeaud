@@ -31,13 +31,13 @@ ActiveAdmin.register Ceramique, as: 'Produits' do
       f.input :price_cents, :hint => "Prix en centimes d'euros. Ex: entrez 1200 pour un prix de 12 €"
     end
     f.inputs "Images", class: 'product_images' do
-      f.object.photo1 img(src: cl_image_path(photo1.path, :width=>250, :crop=>"scale")) unless f.object.new_record?
+      img(src: cl_image_path(f.object.photo1.path, :width=>250, :crop=>"scale")) unless (f.object.new_record? || f.object.photo1.blank?)
       f.input :photo1, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo1 du produit."
-      f.object.photo2 img(src: cl_image_path(photo2.path, :width=>250, :crop=>"scale")) unless f.object.new_record?
+      img(src: cl_image_path(f.object.photo2 .path, :width=>250, :crop=>"scale")) unless (f.object.new_record? || f.object.photo2.blank?)
       f.input :photo2, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo2 du produit."
-      f.object.photo3 img(src: cl_image_path(photo3.path, :width=>250, :crop=>"scale")) unless f.object.new_record?
+      img(src: cl_image_path(f.object.photo3 .path, :width=>250, :crop=>"scale")) unless (f.object.new_record? || f.object.photo3.blank?)
       f.input :photo3, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo3 du produit."
-      f.object.photo4 img(src: cl_image_path(photo4.path, :width=>250, :crop=>"scale")) unless f.object.new_record?
+      img(src: cl_image_path(f.object.photo4 .path, :width=>250, :crop=>"scale")) unless (f.object.new_record? || f.object.photo4.blank?)
       f.input :photo4, :as => :formtastic_attachinary, :hint => "Sélectionnez la photo4 du produit."
     end
     f.actions
@@ -54,10 +54,10 @@ show do |ceramique|
     end
     row :price_cents
     row :images do |ceramique|
-      span img(src: cl_image_path(photo1.path, :width=>250, :crop=>"scale")) if ceramique.photo1
-      span img(src: cl_image_path(photo2.path, :width=>250, :crop=>"scale")) if ceramique.photo2
-      span img(src: cl_image_path(photo3.path, :width=>250, :crop=>"scale")) if ceramique.photo3
-      span img(src: cl_image_path(photo4.path, :width=>250, :crop=>"scale")) if ceramique.photo4
+      span img(src: cl_image_path(ceramique.photo1.path, :width=>250, :crop=>"scale")) if ceramique.photo1
+      span img(src: cl_image_path(ceramique.photo2.path, :width=>250, :crop=>"scale")) if ceramique.photo2
+      span img(src: cl_image_path(ceramique.photo3.path, :width=>250, :crop=>"scale")) if ceramique.photo3
+      span img(src: cl_image_path(ceramique.photo4.path, :width=>250, :crop=>"scale")) if ceramique.photo4
     end
   end
  end

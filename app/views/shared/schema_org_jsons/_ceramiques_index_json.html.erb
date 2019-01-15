@@ -9,7 +9,7 @@
     "itemListElement": <%= raw @ceramiques.map {|ceramique| {
       "@type": "ListItem",
       "position": @ceramiques.index(ceramique) + 1,
-      "image": cl_image_path(ceramique.photos[0].path),
+      "image": cl_image_path(ceramique.photo1.path),
       "name": ceramique.name,
       "url": "https://#{ENV['APPNAME']}.herokuapp.com/#{ENV['MODEL']}/#{ceramique.to_param}",
     }}.to_json %>

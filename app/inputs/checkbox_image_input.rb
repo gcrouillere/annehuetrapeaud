@@ -9,6 +9,6 @@ class CheckboxImageInput < Formtastic::Inputs::CheckBoxesInput
   end
 
   def img_tag(choice)
-    cl_image_tag(Ceramique.find(choice.gsub("ID: ","").to_i).photos[0].path, :width=>100, :height=>100, :crop=>"fill")
+    cl_image_tag(Ceramique.find(choice.gsub("ID: ","").to_i).photo1.path, :width=>100, :height=>100, :crop=>"fill")
   end
 end
