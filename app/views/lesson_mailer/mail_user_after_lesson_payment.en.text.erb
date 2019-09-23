@@ -1,8 +1,10 @@
 Hello <%= @lesson.user.first_name %> <%= @lesson.user.last_name %>,
 
-Thanks for your deposit. Your lesson is validated.
+Thanks for your deposit. Your lesson is validated for <%= t(:people, count: @lesson.student)%>.
 
 Date : <%= l @lesson.start, format: :short %>, for <%= "#{@lesson.moment}" %>.
+
+Location : <%= @lesson.location %>
 
 Regards
 

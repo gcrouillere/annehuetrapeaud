@@ -17,7 +17,7 @@ class PaymentsController < ApplicationController
       payment_method_types: ['card'],
       line_items: [{
         name: 'Anne Huet Rapeaud',
-        description: "Paiement pour #{@order.ceramique || "lesson"}",
+        description: "Paiement pour #{ @order.ceramique || "Stage : " + @order.lesson.calendarupdate.name }",
         amount: @final_amount,
         currency: 'eur',
         quantity: 1,
@@ -78,6 +78,7 @@ class PaymentsController < ApplicationController
       redirect_to confirmation_path and return
     else
       # SEND EMAILS
+      @lesson.update(confirmed: true)
       LessonMailer.mail_user_after_lesson_payment(@lesson, @user).deliver_now
       LessonMailer.mail_francoise_after_lesson_payment(@lesson, @user).deliver_now
       redirect_to stage_payment_confirmation_path and return

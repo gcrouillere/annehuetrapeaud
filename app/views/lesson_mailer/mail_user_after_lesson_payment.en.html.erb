@@ -1,7 +1,8 @@
-<p>Hello <%= @lesson.user.first_name %> <%= @lesson.user.last_name %>,</p>
-<p>Thanks for your deposit. Your lesson is validated.</p>
-<p>Date : <%= l @lesson.start, format: :short %>, for <%= "#{@lesson.moment}" %>.</p>
-<p>Regards</p>
-<p><%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME'].capitalize}" %></p>
+<p>Bonjour <%= @lesson.user.first_name %> <%= @lesson.user.last_name %>,</p>
+<p> Merci pour le paiement de stage. Votre réservation est validée pour <%= t(:people, count: @lesson.student)%> </p>
+<p>Date : <%= l @lesson.start, format: :short %> (<%= "#{@lesson.moment}" %>).</p>
+<p>Lieu : <%= @lesson.location %></p>
+<p>Cordialement</p>
+<p>Anne Huet Rapeaud</p>
 <p>email : <%= "#{ENV['EMAIL']}" %></p>
-<p>phone : <%= "#{ENV['TELEPHONE']}" %></p>
+<p>téléphone : <%= "#{ENV['TELEPHONE']}" %></p>

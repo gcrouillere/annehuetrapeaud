@@ -1,6 +1,6 @@
 <%= "#{ENV['FIRSTNAME'].capitalize} #{ENV['LASTNAME']}" %>,
 
-Tu as reçu le paiement des arrhes pour le stage suivant :
+Tu as reçu le paiement pour le stage suivant :
 
   - Client: <%= "#{@lesson.user.first_name.capitalize} #{@lesson.user.last_name.capitalize} - #{@lesson.user.email}"%>
   - Démarrage le <%= l @lesson.start, format: :short %>.

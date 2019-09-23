@@ -1,3 +1,11 @@
+.no-stage {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  font-size: 22px;
+  border-radius: 1px;
+}
+
 .body-stage {
   label {
     color: $stage-color-label

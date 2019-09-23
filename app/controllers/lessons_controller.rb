@@ -2,66 +2,48 @@ class LessonsController < ApplicationController
   layout 'stage'
   skip_before_action :authenticate_user!, only: [:show, :new]
 
-  def show
-    @lesson = Lesson.find(params[:id])
-    @user = @lesson.user
-    @order = Order.where(user: @user, state: "pending", lesson: @lesson).first
-  end
-
   def new
     @dev_redirection = "https://www.creermonecommerce.fr/lessons/new"
     @lesson = Lesson.new
-    @disabled_dates = full_bookings
-    @first_possible_day = get_first_possible_day
-    @confirmed_course_js_format = confirmed_courses
+    @available_courses = Calendarupdate.where(available: true).order(period_start: :asc)
+    @formatted_moments = Calendarupdate.formatted_moments(@available_courses)
+    @courses_to_display = Calendarupdate.format_stages_ref(@available_courses)
     @twitter_url = request.original_url.to_query('url')
   end
 
   def create
-    unless /^(?:(?:31(\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.match("#{params[:lesson][:start]}")
-      flash[:alert] = t(:date_format_error)
-      redirect_to new_lesson_path and return
-    end
-
-    if params[:lesson][:start].blank?
-      flash[:alert] = t(:blank_start)
-      redirect_to new_lesson_path and return
-    end
-
     if current_user.lessons.where(confirmed: false).present?
-      flash[:alert] = t(:existing_lesson)
+      flash[:alert] = "Vous avez déjà une réservation en cours"
       redirect_to new_lesson_path and return
     end
 
-    @lesson = Lesson.new(lesson_params)
-    @lesson.save
+    @calendar_update = Calendarupdate.find(params[:lesson][:stage_id])
 
-    if @lesson.start < Time.now
-      @lesson.destroy
-      flash[:alert] = t(:date_in_futur)
+    @lesson = Lesson.new(
+      start: @calendar_update.period_start,
+      duration: (@calendar_update.period_end - @calendar_update.period_start).round / (24 * 3600) + 1,
+      student: params[:lesson][:student].to_i,
+      user_id: params[:lesson][:user_id].to_i,
+      confirmed: false,
+      moment: params[:lesson][:moment].split(" - ")[0],
+      calendarupdate: @calendar_update
+    )
+    if capacity_check(@calendar_update, @lesson)
+      @lesson.save
+      am_pm_booking_management(@calendar_update, @lesson)
+      create_order_for_lesson(@lesson)
+      flash[:notice] = "Votre réservation sera conservée 30 min"
+      redirect_to lesson_path(@lesson)
+    else
+      flash[:alert] = "Impossible de réserver. Plus que #{@calendar_update.capacity} place(s) disponible(s) pour ce stage"
       redirect_to new_lesson_path and return
     end
+  end
 
-    for i in 0...@lesson.duration
-      day_checked = @lesson.start + i.day
-      booking = Booking.where(day: day_checked).first
-      if booking.present?
-        if booking.course != i + 1
-          closest_start_answer = Findcloseststart.new(@lesson).closest_start(@lesson) # See service
-          @lesson.destroy
-          flash[:alert] = t(:closest_start, date: "#{closest_start_answer}")
-          redirect_to new_lesson_path and return
-        end
-        #Next "if" block changed for Huet Rapeaud
-        if capacity_check(booking, @lesson)
-          @lesson.destroy
-          flash[:alert] = "Impossible de réserver. Il reste #{booking.capacity_am} place(s) disponible(s) pour le matin et #{booking.capacity_pm} place(s) disponible(s) pour l'après-midi"
-          redirect_to new_lesson_path and return
-        end
-      end
-    end
-    LessonMailer.mail_francoise_after_lesson_create(@lesson).deliver_now
-    redirect_to stage_confirmation_path
+  def show
+    @lesson = Lesson.find(params[:id])
+    @user = @lesson.user
+    @order = Order.where(lesson: @lesson).first
   end
 
   def stage_confirmation
@@ -76,81 +58,38 @@ class LessonsController < ApplicationController
     params.require(:lesson).permit(:start, :duration, :student, :user_id, :moment)
   end
 
-  def confirmed_courses
-    day = ""
-    month = ""
-    confirmed_courses_js_format = []
-    previous_booking_full = false
-    Booking.order(day: :asc).all.each do |booking|
-      if !booking.full && booking.day > Time.now && !(previous_booking_full && booking.course > 1)
-        day = format_booking_to_moment(booking.day.day)
-        month = format_booking_to_moment(booking.day.month)
-        confirmed_courses_js_format << "#{day}/#{month}/#{booking.day.year}"
-        previous_booking_full = false
-      elsif booking.full || (previous_booking_full && booking.course > 1)
-        previous_booking_full = true
-      end
-    end
-    return confirmed_courses_js_format
-  end
-
-  # Next method removed for Huet Rapeaud
-  def min_capacity(lesson)
-
-  end
-
-  def format_booking_to_moment(booking_day_or_month)
-    output = ""
-      if booking_day_or_month < 10
-        output << "0"
-      end
-      output << booking_day_or_month.to_s
-      return output
-  end
-
-  def full_bookings
-    day = ""
-    month = ""
-    disabled_dates = []
-    previous_booking_full = false
-    Booking.order(day: :asc).all.each do |booking|
-      day = format_booking_to_moment(booking.day.day)
-      month = format_booking_to_moment(booking.day.month)
-      if booking.full || (previous_booking_full && booking.course > 1)
-        disabled_dates << "#{booking.day.year}-#{month}-#{day}"
-        previous_booking_full = true
-      else
-          previous_booking_full = false
-      end
-    end
-    return disabled_dates
-  end
-
-  def get_first_possible_day
-    day_checked = Time.now.beginning_of_day + 1.day
-    output = []
-    for i in 0..365
-      if Booking.where("day >= ? AND day <= ? AND capacity > ? ", day_checked.beginning_of_day, day_checked.end_of_day, 0).present? || Booking.where("day >= ? AND day <= ? ", day_checked.beginning_of_day, day_checked.end_of_day).empty?
-        day = format_booking_to_moment(day_checked.day)
-        month = format_booking_to_moment(day_checked.month)
-        output << "#{day_checked.year}-#{month}-#{day}"
-        return output
-      end
-      day_checked = day_checked + 1.day
-    end
-    return output
-  end
-
-  # Huet rapeaud Specific
-  def capacity_check(booking, lesson)
+  def capacity_check(calendar_update, lesson)
     output = false
-    if lesson.moment == "matin"
-      lesson.student > booking.capacity_am ? output = true : output
-    elsif lesson.moment == "après-midi"
-      lesson.student > booking.capacity_pm ? output = true : output
+    if lesson.moment == "Matin"
+      output = true if lesson.student < calendar_update.capacity_am
+    elsif lesson.moment == "Après-midi"
+      output = true if lesson.student < calendar_update.capacity_pm
     else
-      lesson.student > booking.capacity_am || lesson.student > booking.capacity_pm ? output = true : output
+      output = true if lesson.student < calendar_update.capacity
     end
     return output
+  end
+
+  def am_pm_booking_management(calendar_update, lesson)
+    if lesson.moment == "Matin"
+      calendar_update.update(capacity: calendar_update.capacity - lesson.student, capacity_am: calendar_update.capacity_am - lesson.student)
+    elsif lesson.moment == "Après-midi"
+      calendar_update.update(capacity: calendar_update.capacity - lesson.student, capacity_pm: calendar_update.capacity_pm - lesson.student)
+    else
+      calendar_update.update(capacity: calendar_update.capacity - lesson.student, capacity_am: calendar_update.capacity_am - lesson.student, capacity_pm: calendar_update.capacity_pm - lesson.student)
+    end
+    calendar_update.update(available: false) if calendar_update.capacity <= 0
+  end
+
+  def create_order_for_lesson(lesson)
+    amount = lesson.moment == "Journée" ? lesson.calendarupdate.full_price_cents : lesson.calendarupdate.half_price_cents
+
+    Order.create!(
+      state: 'pending',
+      amount_cents: amount,
+      user: lesson.user,
+      lesson: lesson,
+      take_away: false
+    )
   end
 end

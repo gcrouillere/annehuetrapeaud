@@ -75,7 +75,7 @@ fr:
   first_day: "Jour de stage"
   clic_on_calendar: "Cliquez sur l'icône calendrier pour sélectionner une date"
   clic_on_calendar_mobile: "Clic sur le calendrier"
-  course_request: "demander une réservation"
+  course_request: "Réserver ce stage"
   comment:
     one: "Commentaire"
     other: "Commentaires"
@@ -94,8 +94,8 @@ fr:
   back_to_shop_404: "Retourner dans la boutique"
   json_course_name: "Stage de blabal"
   json_course_description: "Fabriquez vous-même vos poteries au cours d'un stage"
-  deposit: "Montant des arrhes: "
-  course: "Cours pour"
+  deposit: "Montant du stage: "
+  course: "Stage"
   people: "personne"
   lesson_start: "Stage le"
   proceed_to_payment: "Finaliser ma commande"
@@ -162,7 +162,9 @@ fr:
       category:
         one: "Catégorie"
         other: "Catégories"
-      calendarupdate: "Bloquage de période"
+      calendarupdate:
+        one: "Stage"
+        other: "Stages"
       lesson:
         one: "Réservation"
         other: "Réservations"
@@ -194,17 +196,22 @@ fr:
       category:
         name: "Nom"
       lesson:
-        start: "Début de la réservation"
+        start: "Date"
         duration: "Durée en jours"
         user: "Client"
         confirmed: "Confirmé ?"
         student: "Nombre de participants"
       calendarupdate:
-        period_start: "Début de la période"
+        period_start: "Date"
         period_end: "Fin de la période"
         capacity: "Places disponibles"
         available: "Disponible ?"
-        price_cents: "Prix en cents d'€"
+        full_price_cents: "Prix en cents d'€, journée"
+        half_price_cents: "Prix en cents d'€, 1/2 journée"
+        moment: "Durée"
+        capacity: "Capacité"
+        location: "Lieu"
+        name: "Intitulé"
       offer:
         title: "Titre"
         description: "Description"

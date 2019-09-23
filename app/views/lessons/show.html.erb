@@ -7,8 +7,9 @@
 
     <div class="hidden-xs col-sm-offset-2 col-sm-8">
       <div class="text-center-stage stage-payment">
-        <h3><%=t(:deposit)%> <%= humanized_money(@order.amount) %> <%= currency_symbol %></h3>
-        <p><%= t(:course)%> <%= @order.lesson.duration%> <%= @order.lesson.moment %>, <%= @order.lesson.student%> <%= t(:people, count: @order.lesson.student)%>.</p>
+        <h2><%= @lesson.calendarupdate.name %></h2>
+        <h3>Coût du stage <%= humanized_money(@order.amount) %> <%= currency_symbol %></h3>
+        <p><%= t(:course)%> <%= @order.lesson.moment %>, <%= @order.lesson.student%> <%= t(:people, count: @order.lesson.student)%>.</p>
         <p><%=t(:lesson_start)%> : <%= l @order.lesson.start, format: :short %>.</p>
         <form action="/orders/<%= @order.id%>/payments/new" method="get">
           <input type="hidden" name="order_id" value="<%= @order.id%>">
@@ -22,7 +23,8 @@
 
     <div class="hidden-sm hidden-md hidden-lg col-xs-12">
       <div class="text-center-stage-mobile stage-payment-mobile">
-        <h4><%=t(:deposit)%>  <%= humanized_money(@order.amount) %> <%= currency_symbol %></h4>
+        <h3><%= @lesson.calendarupdate.name %></h3>
+        <h4>Coût du stage <%= humanized_money(@order.amount) %> <%= currency_symbol %></h4>
         <p><%= t(:course)%> <%= @order.lesson.duration%> <%= @order.lesson.moment %>, <%= @order.lesson.student%> <%= t(:people, count: @order.lesson.student)%>.</p>
         <p><%=t(:lesson_start)%> : <%= l @order.lesson.start, format: :short %>.</p>
         <form action="/orders/<%= @order.id%>/payments/new" method="get">

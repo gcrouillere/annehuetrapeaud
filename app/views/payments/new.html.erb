@@ -39,7 +39,7 @@
         <div class="product-amount lesson-amount text-center">
           <% if @order.lesson.present?  %>
             <h3><%=t(:deposit)%> <%= humanized_money(@order.amount) %> <%= currency_symbol %></h3>
-            <h4><%=t(:course)%> <%= @order.lesson.duration%> jours, <%= @order.lesson.student%> <%=t(:person, count: @order.lesson.student)%>.</h4>
+            <h4><%=t(:course)%> : <%= @order.lesson.moment %>, <%= @order.lesson.student%> <%=t(:person, count: @order.lesson.student)%>.</h4>
             <h4><%=t(:lesson_start)%> <%= @order.lesson.start.day%>/<%= @order.lesson.start.month%>/<%= @order.lesson.start.year%></h4>
           <% else %>
             <% @order.promo ? discount = @order.promo.percentage : discount = 0 %>

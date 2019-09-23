@@ -1,5 +1,8 @@
 class Lesson < ApplicationRecord
+  attr_accessor :stages_ref
+
   belongs_to :user
+  belongs_to :calendarupdate
   has_one :order
 
   validates :start, presence: true
