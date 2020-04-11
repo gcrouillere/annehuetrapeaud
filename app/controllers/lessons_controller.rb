@@ -3,7 +3,7 @@ class LessonsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :new]
 
   def new
-    @dev_redirection = "https://www.creermonecommerce.fr/lessons/new"
+    @dev_redirection = "https://www.guillaumecrouillere.fr"
     @lesson = Lesson.new
     @available_courses = Calendarupdate.where(available: true).order(period_start: :asc)
     @formatted_moments = Calendarupdate.formatted_moments(@available_courses)
