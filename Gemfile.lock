@@ -1,15 +1,15 @@
 GIT
-  remote: git://github.com/activeadmin/inherited_resources.git
-  revision: 1597ddaae144f3030000a94bff47f74ae57f87da
+  remote: https://github.com/activeadmin/inherited_resources.git
+  revision: ff96cb441b1fbcd574a998167fb8a159296f4673
   specs:
-    inherited_resources (1.9.0)
-      actionpack (>= 5.0, < 6.0)
+    inherited_resources (1.11.0)
+      actionpack (>= 5.2, < 6.1)
       has_scope (~> 0.6)
-      railties (>= 5.0, < 6.0)
-      responders
+      railties (>= 5.2, < 6.1)
+      responders (>= 2, < 4)
 
 GIT
-  remote: git://github.com/bys-control/activeadmin-index_as_calendar.git
+  remote: https://github.com/bys-control/activeadmin-index_as_calendar.git
   revision: 1e07d605b536f4f9a89c054f34910728f46d3871
   specs:
     activeadmin-index_as_calendar (0.0.13)
@@ -194,7 +194,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.2.0)
+    json (2.3.1)
     jwt (2.1.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
