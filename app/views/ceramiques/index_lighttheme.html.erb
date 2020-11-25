@@ -28,13 +28,13 @@
                   <style>
                     .ceramique-front-image-<%=index%> {
                       <% if ceramique.photo2 %>
-                        background-image: url(<%= cl_image_path ceramique.photo2.path, quality: "auto" %>);
+                        background-image: url(<%= cl_image_path ceramique.photo2&.path || "", quality: "auto" %>);
                       <% end %>
-                      background-image: url(<%= cl_image_path ceramique.photo1.path, quality: "auto" %>);
+                      background-image: url(<%= cl_image_path ceramique.photo1&.path || "", quality: "auto" %>);
                     }
                     <% if ceramique.photo2 %>
                     .ceramique-front-image-<%=index%>:hover {
-                      background-image: url(<%= cl_image_path ceramique.photo2.path, quality: "60" %>);
+                      background-image: url(<%= cl_image_path ceramique.photo2&.path || "", quality: "60" %>);
                     }
                     <% end %>
                   </style>

@@ -88,7 +88,7 @@
                 <div class="ceramiquecardimage ceramiquecardimage-<%=index%>">
                     <style>
                     .ceramiquecardimage-<%=index%> {
-                      background-image: url(<%= cl_image_path ceramique.photo1.path, quality: "auto" %>);
+                      background-image: url(<%= cl_image_path ceramique.photo1&.path || "", quality: "auto" %>);
                       background-size: cover;
                       background-position-y: center;
                       background-position-x: center;

@@ -5,7 +5,7 @@
     <%= @ceramique.name.capitalize %>, d'Anne Huet Rapeaud. Prix : <%= humanized_money(@ceramique.price)%> €. Acheter en ligne !
 <% end %>
 <% content_for(:meta_image) do %>
-  <%= cl_image_path @ceramique.photo1.path %>
+  <%= cl_image_path @ceramique.photo1&.path || "" %>
 <% end %>
 
 <div class="container-lighttheme-show">
@@ -29,7 +29,7 @@
                 <% verticale ? classe = "verticale" : classe = "horizontale"  %>
               <div class="front-image-div">
                 <%= render 'shared/product_image_overlay' %>
-                <img class="img-front <%= classe %>" id="zoom01" src="<%= cl_image_path @ceramique.photo1.path %>" data-zoom-image="<%= cl_image_path @ceramique.photo1.path %>" alt="<%=@ceramique.name%>">
+                <img class="img-front <%= classe %>" id="zoom01" src="<%= cl_image_path @ceramique.photo1&.path || "" %>" data-zoom-image="<%= cl_image_path @ceramique.photo1&.path || "" %>" alt="<%=@ceramique.name%>">
               </div>
               <div class="images">
                 <% (1..4).each do |i|%>
@@ -94,7 +94,7 @@
               <% end %>
                 <div class="col-sm-4 same-category-product-card-lighttheme">
                   <%= link_to ceramique_path(ceramique) , title: "#{ceramique.name}", class: "same-category-product-card-link"  do %>
-                  <img class="same-product-photo" src="<%= cl_image_path ceramique.photo1.path, quality: "auto" %>" alt="<%=ceramique.name%>">
+                  <img class="same-product-photo" src="<%= cl_image_path ceramique.photo1&.path || "", quality: "auto" %>" alt="<%=ceramique.name%>">
                   <div class="same-category-product-card-text">
                     <p class="ceramique-name"><%= ceramique.name.capitalize%></p>
                     <% ceramique.offer ? discount =  ceramique.offer.discount : discount = 0 %>
@@ -130,7 +130,7 @@
         </div>
         <h1> <%= @ceramique.name.capitalize%> </h1>
         <div class="image-xs-sm-lightheme">
-          <img class="img-front" src="<%= cl_image_path @ceramique.photo1.path, quality: "auto" %>" alt="<%=@ceramique.name%>">
+          <img class="img-front" src="<%= cl_image_path @ceramique.photo1&.path || "", quality: "auto" %>" alt="<%=@ceramique.name%>">
         </div>
       </div>
       <div class="other-imgs-lighttheme other-mobile-lighttheme">

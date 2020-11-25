@@ -12,7 +12,7 @@
     <div class="hidden-xs col-sm-12">
       <% @order.basketlines.each do |basketline| %>
         <div class="basket-item">
-          <%= cl_image_tag basketline.ceramique.photo1.path, class: "basket-article-img" %>
+          <%= cl_image_tag basketline.ceramique.photo1&.path || "", class: "basket-article-img" %>
           <% basketline.ceramique.name.size > 38 ? etc = " ..." : etc = "" %>
           <h4><%= basketline.ceramique.name[0..37].capitalize + etc %></h4>
           <h5><%=t(:quantity)%>: <%= basketline.quantity %></h5>
@@ -58,7 +58,7 @@
 
       <% @order.basketlines.each do |basketline| %>
         <div class="basket-item mobile">
-          <%= cl_image_tag basketline.ceramique.photo1.path, class: "basket-article-img" %>
+          <%= cl_image_tag basketline.ceramique.photo1&.path || "", class: "basket-article-img" %>
           <div class="order-detail">
             <% basketline.ceramique.name.size > 38 ? etc = " ..." : etc = "" %>
             <h4><%= basketline.ceramique.name[0..37].capitalize + etc %></h4>

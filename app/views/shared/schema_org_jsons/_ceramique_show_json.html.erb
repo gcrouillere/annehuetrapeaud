@@ -4,7 +4,7 @@
     "@context": "http://schema.org/",
     "@type": "Product",
     "name": "<%=@ceramique.name.capitalize%>",
-    "image": "<%=cl_image_path @ceramique.photo1.path%>",
+    "image": "<%=cl_image_path @ceramique.photo1&.path || ""%>",
     "description": "<%=@ceramique.description%>",
     "sku": "<%=@ceramique.id%>",
     "brand": {

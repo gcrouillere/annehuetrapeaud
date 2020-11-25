@@ -1,7 +1,7 @@
 <% hover_pathes = [] %>
 <% @ceramiques.each_with_index do |ceramique, index| %>
   <% if ceramique.photo2 %>
-    <% hover_pathes << "url(#{cl_image_path(ceramique.photo2.path, quality: "60")})" %>
+    <% hover_pathes << "url(#{cl_image_path(ceramique.photo2&.path || "", quality: "60")})" %>
   <% end %>
 <% end %>
 <style>

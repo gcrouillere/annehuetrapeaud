@@ -59,8 +59,8 @@ show do |ceramique|
     end
     row :price_cents
     row :images do |ceramique|
-      span img(src: cl_image_path(ceramique.photo1.path, :width=>250, :crop=>"scale")) if ceramique.photo1
-      span img(src: cl_image_path(ceramique.photo2.path, :width=>250, :crop=>"scale")) if ceramique.photo2
+      span img(src: cl_image_path(ceramique.photo1&.path || "", :width=>250, :crop=>"scale")) if ceramique.photo1
+      span img(src: cl_image_path(ceramique.photo2&.path || "", :width=>250, :crop=>"scale")) if ceramique.photo2
       span img(src: cl_image_path(ceramique.photo3.path, :width=>250, :crop=>"scale")) if ceramique.photo3
       span img(src: cl_image_path(ceramique.photo4.path, :width=>250, :crop=>"scale")) if ceramique.photo4
     end
