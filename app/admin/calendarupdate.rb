@@ -13,7 +13,7 @@ ActiveAdmin.register Calendarupdate do
       f.input :name
       f.input :description
       f.input :location
-      f.input :moment, as: :check_boxes, collection: ["Journée", "Matin", "Après-midi"], checked: calendarupdate.moment.split("†").select { |m| m != "" }
+      f.input :moment, as: :check_boxes, collection: ["Journée", "Matin", "Après-midi"]
     end
     f.actions
   end
