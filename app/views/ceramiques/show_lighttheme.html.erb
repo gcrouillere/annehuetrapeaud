@@ -23,7 +23,7 @@
                  <% (1..4).each do |i|%>
                   <% photo_checked = @ceramique.send("photo#{i}")%>
                     <% if photo_checked %>
-                      <% photo_checked.height > photo_checked.width ? verticale = true : nil %>
+                      <% (photo_checked.height || 0) > (photo_checked.width || 1) ? verticale = true : nil %>
                     <% end %>
                   <% end %>
                 <% verticale ? classe = "verticale" : classe = "horizontale"  %>
