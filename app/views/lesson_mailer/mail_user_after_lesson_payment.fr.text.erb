@@ -4,12 +4,11 @@ Merci pour le paiement de stage. Votre réservation est validée pour <%= t(:peo
 
 Date : <%= l @lesson.start, format: :short %>, pour une durée de <%= "#{@lesson.duration}" %> (<%= "#{@lesson.moment}" %>).
 
-Lieu : <%= @lesson.location
+Lieu : <%= @lesson.calendarupdate.location %>
 
 Cordialement
 
 Anne Huet Rapeaud
 
 email : <%= "#{ENV['EMAIL']}" %>
-
-téléphone : <%= "#{ENV['TELEPHONE']}" %>
+phone : <%= "#{ENV['TELEPHONE']}" %>
